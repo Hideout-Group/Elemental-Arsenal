@@ -1,0 +1,9 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "item/iron_sword"
+  },
+  "overrides": [
+    {"predicate": {"type": 1}, "model": "elementalarsenal:item/base_elemental_sword_air"}
+  ]
+}

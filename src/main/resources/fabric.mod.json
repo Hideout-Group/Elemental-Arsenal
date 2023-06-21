@@ -18,6 +18,9 @@
 		"main": [
 			"com.hideout.elementalarsenal.ElementalArsenal"
 		],
+		"client": [
+			"com.hideout.elementalarsenal.client.ElementalArsenalClient"
+		],
 		"fabric-datagen": [
           "com.hideout.elementalarsenal.ElementalArsenalDataGenerator"
 		]
