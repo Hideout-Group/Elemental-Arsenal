@@ -20,8 +20,11 @@ public class ElementalGemItem extends Item implements IElementalItem {
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        if (user.getWorld().isClient || hand.equals(Hand.OFF_HAND)) return super.useOnEntity(stack, user, entity, hand);
-        NbtCompound nbt = stack.getOrCreateNbt();
+        if (hand.equals(Hand.OFF_HAND)) return super.useOnEntity(stack, user, entity, hand);
+        ItemStack handItem = user.getMainHandStack(); // I don't know why I had to do this
+        NbtCompound nbt = handItem.getOrCreateNbt();
+        ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
+
         if (nbt.getInt("type") != ElementalType.getId(ElementalType.BLANK)) return super.useOnEntity(stack, user, entity, hand);
         if (entity instanceof AnimalEntity)  {
             nbt.putInt("type", ElementalType.getId(ElementalType.NATURE));
