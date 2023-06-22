@@ -1,9 +1,13 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "elementalarsenal:item/elemental_sword_blank"
+    "layer0": "item/diamond"
   },
   "overrides": [
     {"predicate": {"type": 1}, "model": "elementalarsenal:item/elemental_sword_air"}
   ]
 }
+
+
+
+
