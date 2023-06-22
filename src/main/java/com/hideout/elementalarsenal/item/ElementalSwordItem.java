@@ -11,7 +11,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 public class ElementalSwordItem extends SwordItem {
-    private boolean toggled = false;
     public ElementalSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
@@ -19,7 +18,9 @@ public class ElementalSwordItem extends SwordItem {
     @Override
     public ItemStack getDefaultStack() {
         ItemStack stack = new ItemStack(this);
-        stack.getOrCreateNbt().putInt("type", 0);
+        NbtCompound nbt = stack.getOrCreateNbt();
+        nbt.putInt("type", 0);
+        nbt.putBoolean("toggled", false);
         return stack;
     }
 
@@ -29,12 +30,11 @@ public class ElementalSwordItem extends SwordItem {
             return super.use(world, user, hand);
         }
 
-        toggled = !toggled;
-
         ItemStack stack = user.getMainHandStack();
 
         NbtCompound nbt = stack.getOrCreateNbt();
-        nbt.putInt("type", toggled ? 0 : 1);
+        nbt.putBoolean("toggled", !nbt.getBoolean("toggled"));
+        nbt.putInt("type", nbt.getBoolean("toggled") ? 0 : 1);
 
         ElementalArsenal.LOGGER.info(nbt.get("type").asString());
 
