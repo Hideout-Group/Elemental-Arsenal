@@ -49,6 +49,7 @@ public abstract class ItemEntityMixin extends Entity {
             }
         }
     }
+
     @Inject(at = @At("HEAD"), method = "tick")
     public void injectTick(CallbackInfo ci) {
         ItemEntity entity = (ItemEntity)(Object)this;
