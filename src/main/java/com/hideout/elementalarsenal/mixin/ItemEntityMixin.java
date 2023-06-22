@@ -56,10 +56,11 @@ public abstract class ItemEntityMixin extends Entity {
         if (entity.getStack().isOf(ModItems.ELEMENTAL_GEM)) {
             NbtCompound nbt = entity.getStack().getOrCreateNbt();
             if (nbt.getInt("type") != ElementalType.getId(ElementalType.BLANK)) return;
-                if (entity.getWorld().getBlockState(entity.getBlockPos()).isOf(Blocks.GRAVEL)) {
-                    nbt.putInt("type", ElementalType.getId(ElementalType.EARTH));
-                    ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
-                }
+
+            if (entity.getWorld().getBlockState(entity.getBlockPos()).isOf(Blocks.GRAVEL)) {
+                nbt.putInt("type", ElementalType.getId(ElementalType.EARTH));
+                ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
+            }
         }
 
     }
