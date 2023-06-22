@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{"item": "elementalarsenal:elemental_gem"}],
+  "result": {
+    "item": "elementalarsenal:elemental_gem"
+  }
+}

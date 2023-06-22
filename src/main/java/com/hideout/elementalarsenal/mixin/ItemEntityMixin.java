@@ -7,6 +7,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -72,6 +73,22 @@ public abstract class ItemEntityMixin extends Entity {
 
             if (entity.getWorld().getBlockState(entity.getBlockPos()).isOf(Blocks.WATER)) {
                 nbt.putInt("type", ElementalType.getId(ElementalType.WATER));
+                ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
+                return;
+            }
+
+            if (entity.getWorld().getBlockState(entity.getBlockPos()).isOf(Blocks.LIGHTNING_ROD)) {
+                LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT, entity.getWorld());
+                lightning.setPosition(entity.getBlockPos().getX(), entity.getBlockPos().getY(), entity.getBlockPos().getZ());
+                lightning.setCosmetic(true);
+                entity.getWorld().spawnEntity(lightning);
+                nbt.putInt("type", ElementalType.getId(ElementalType.LIGHTNING));
+                ElementalArsenal.LOGGER.info(ElementalType.toCasedString(ElementalType.fromId(nbt.getInt("type"))));
+                return;
+            }
+
+            if (fallDistance >= 50f) {
+                nbt.putInt("type", ElementalType.getId(ElementalType.AIR));
                 ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
                 return;
             }

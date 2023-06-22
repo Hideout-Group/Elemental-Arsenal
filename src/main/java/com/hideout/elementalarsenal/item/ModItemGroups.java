@@ -1,21 +1,13 @@
 package com.hideout.elementalarsenal.item;
 
-import com.google.common.collect.Maps;
 import com.hideout.elementalarsenal.ElementalArsenal;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.impl.itemgroup.FabricItemGroupBuilderImpl;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ModItemGroups {
     public static ItemGroup ELEMENTAL_ARSENAL_GROUP;
@@ -28,6 +20,7 @@ public class ModItemGroups {
                         {
                             entries.add(ModItems.ELEMENTAL_SWORD);
                             entries.add(ModItems.ELEMENTAL_GEM);
+                            entries.add(ModItems.ELEMENTAL_INFUSION_TEMPLATE);
                         })
                         .build());
     }

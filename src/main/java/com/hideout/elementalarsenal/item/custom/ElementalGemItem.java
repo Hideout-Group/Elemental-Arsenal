@@ -14,6 +14,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
 public class ElementalGemItem extends Item implements IElementalItem {
+    private static final String TYPE = "type";
     public ElementalGemItem(Settings settings) {
         super(settings);
     }
@@ -23,12 +24,12 @@ public class ElementalGemItem extends Item implements IElementalItem {
         if (hand.equals(Hand.OFF_HAND)) return super.useOnEntity(stack, user, entity, hand);
         ItemStack handItem = user.getMainHandStack(); // I don't know why I had to do this
         NbtCompound nbt = handItem.getOrCreateNbt();
-        ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
+        ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt(TYPE)));
 
-        if (nbt.getInt("type") != ElementalType.getId(ElementalType.BLANK)) return super.useOnEntity(stack, user, entity, hand);
+        if (nbt.getInt(TYPE) != ElementalType.getId(ElementalType.BLANK)) return super.useOnEntity(stack, user, entity, hand);
         if (entity instanceof AnimalEntity)  {
-            nbt.putInt("type", ElementalType.getId(ElementalType.NATURE));
-            ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
+            nbt.putInt(TYPE, ElementalType.getId(ElementalType.NATURE));
+            ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt(TYPE)));
         }
 
         return super.useOnEntity(stack, user, entity, hand);
@@ -42,7 +43,7 @@ public class ElementalGemItem extends Item implements IElementalItem {
 
     @Override
     public ElementalType getType(ItemStack stack) {
-        return ElementalType.fromId(stack.getOrCreateNbt().getInt("type"));
+        return ElementalType.fromId(stack.getOrCreateNbt().getInt(TYPE));
     }
 
     @Override
