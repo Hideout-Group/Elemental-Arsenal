@@ -1,5 +1,6 @@
 package com.hideout.elementalarsenal;
 
+import com.hideout.elementalarsenal.item.ModItemGroups;
 import com.hideout.elementalarsenal.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 
@@ -20,7 +21,7 @@ public class ElementalArsenal implements ModInitializer {
 		// Proceed with mild caution.
 
 		ModItems.registerItems();
-
+		ModItemGroups.registerItemGroups();
 		LOGGER.info("Hello Fabric world!");
 	}
 }
