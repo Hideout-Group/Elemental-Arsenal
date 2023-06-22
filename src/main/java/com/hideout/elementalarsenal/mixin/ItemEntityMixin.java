@@ -60,6 +60,12 @@ public abstract class ItemEntityMixin extends Entity {
             if (entity.getWorld().getBlockState(entity.getBlockPos()).isOf(Blocks.GRAVEL)) {
                 nbt.putInt("type", ElementalType.getId(ElementalType.EARTH));
                 ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
+                return;
+            }
+            if (entity.getWorld().getBlockState(entity.getBlockPos()).isOf(Blocks.POWDER_SNOW)) {
+                nbt.putInt("type", ElementalType.getId(ElementalType.ICE));
+                ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
+                return;
             }
         }
 
