@@ -21,7 +21,7 @@ public class ElementalArsenal implements ModInitializer {
 		// Proceed with mild caution.
 
 		ModItems.registerItems();
-		ModItemGroups.registerItemGroups();
+		ModItemGroups.registerItemGroups(); // RUN AFTER ITEMS
 		LOGGER.info("Hello Fabric world!");
 	}
 }

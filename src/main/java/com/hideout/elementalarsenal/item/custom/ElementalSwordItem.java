@@ -1,16 +1,18 @@
-package com.hideout.elementalarsenal.item;
+package com.hideout.elementalarsenal.item.custom;
 
-import com.hideout.elementalarsenal.ElementalArsenal;
+import com.hideout.elementalarsenal.item.custom.util.IElementalItem;
+import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class ElementalSwordItem extends SwordItem {
+public class ElementalSwordItem extends SwordItem implements IElementalItem {
     public ElementalSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
@@ -20,7 +22,6 @@ public class ElementalSwordItem extends SwordItem {
         ItemStack stack = new ItemStack(this);
         NbtCompound nbt = stack.getOrCreateNbt();
         nbt.putInt("type", 0);
-        nbt.putBoolean("toggled", false);
         return stack;
     }
 
@@ -33,11 +34,24 @@ public class ElementalSwordItem extends SwordItem {
         ItemStack stack = user.getMainHandStack();
 
         NbtCompound nbt = stack.getOrCreateNbt();
-        nbt.putBoolean("toggled", !nbt.getBoolean("toggled"));
-        nbt.putInt("type", nbt.getBoolean("toggled") ? 0 : 1);
-
-        ElementalArsenal.LOGGER.info(nbt.get("type").asString());
+        nbt.putInt("type", (nbt.getInt("type") + 1) % 7);
 
         return super.use(world, user, hand);
+    }
+
+    @Override
+    public Text getName(ItemStack stack) {
+        return Text.literal(getAppendedName(stack))
+                .formatted(ElementalType.getFormattings(getType(stack)));
+    }
+
+    @Override
+    public ElementalType getType(ItemStack stack) {
+        return ElementalType.fromId(stack.getOrCreateNbt().getInt("type"));
+    }
+
+    @Override
+    public String getAppendedName(ItemStack stack) {
+        return ElementalType.toCasedString(getType(stack)) + " " + super.getName(stack).getString();
     }
 }
