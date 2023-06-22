@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemEntity.class)
@@ -32,7 +33,7 @@ public abstract class ItemEntityMixin extends Entity {
         if (entity.getStack().isOf(ModItems.ELEMENTAL_GEM)) {
             NbtCompound nbt = entity.getStack().getOrCreateNbt();
             if (nbt.getInt("type") != ElementalType.getId(ElementalType.BLANK)) return;
-            if (source.isIn(DamageTypeTags.IS_FIRE)){
+            if (source.isIn(DamageTypeTags.IS_FIRE)){ //Convert to Fire
                 if (!entity.getWorld().isClient) {
                     for (BlockPos pos : BlockPos.iterateOutwards(entity.getBlockPos(), 1, 1, 1)) {
                         if (entity.getWorld().getBlockState(pos).isOf(Blocks.FIRE)) {
@@ -43,10 +44,23 @@ public abstract class ItemEntityMixin extends Entity {
                     entity.getWorld().playSound(null, entity.getBlockPos(),
                             SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS);
                 }
-
                 nbt.putInt("type", ElementalType.getId(ElementalType.FIRE));
                 ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
             }
         }
+    }
+    @Inject(at = @At("HEAD"), method = "tick")
+    public void injectTick(CallbackInfo ci) {
+        ItemEntity entity = (ItemEntity)(Object)this;
+
+        if (entity.getStack().isOf(ModItems.ELEMENTAL_GEM)) {
+            NbtCompound nbt = entity.getStack().getOrCreateNbt();
+            if (nbt.getInt("type") != ElementalType.getId(ElementalType.BLANK)) return;
+                if (entity.getWorld().getBlockState(entity.getBlockPos()).isOf(Blocks.GRAVEL)) {
+                    nbt.putInt("type", ElementalType.getId(ElementalType.EARTH));
+                    ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt("type")));
+                }
+        }
+
     }
 }
