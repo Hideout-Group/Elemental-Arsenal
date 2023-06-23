@@ -61,7 +61,7 @@ public abstract class ItemEntityMixin extends Entity {
 
         if (entity.getStack().isOf(ModItems.ELEMENTAL_GEM)) {
             ItemStack stack = entity.getStack();
-            IMultiElementItem item = (IMultiElementItem) stack.getItem();
+            IElementalItem item = (IElementalItem) stack.getItem();
             if (item.getType(stack) != ElementalType.BLANK) return;
 
             BlockState state = entity.getWorld().getBlockState(entity.getBlockPos()); // (very) Small microoptimisation, don't have to read the block state 5 times

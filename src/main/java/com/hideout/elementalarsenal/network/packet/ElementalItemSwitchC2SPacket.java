@@ -21,7 +21,7 @@ public class ElementalItemSwitchC2SPacket {
         if (stack.getItem() instanceof IMultiElementItem item) {
             boolean valid = direction > 0 ? item.incrementType(stack) : item.decrementType(stack);
             PacketByteBuf newBuf = PacketByteBufs.create();
-            newBuf.writeInt(direction);
+            newBuf.writeNbt(stack.getNbt());
 
             if (valid) {
                 ServerPlayNetworking.send(player, ModMessages.ELEMENTAL_ITEM_SYNC, newBuf);

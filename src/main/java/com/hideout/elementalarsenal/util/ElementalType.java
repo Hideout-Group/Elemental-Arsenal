@@ -1,6 +1,8 @@
 package com.hideout.elementalarsenal.util;
 
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 
 import java.util.HashMap;
@@ -46,6 +48,14 @@ public enum ElementalType {
             if (entry.getValue().NAME.equalsIgnoreCase(str)) return entry.getKey();
         }
         return null;
+    }
+
+    public static MutableText toFormattedText(ElementalType type) {
+        return Text.literal(toCasedString(type)).setStyle(getStyle(type));
+    }
+
+    public static Text toFormattedText(int type) {
+        return toFormattedText(fromId(type));
     }
 
     public static String toCasedString(ElementalType type) {

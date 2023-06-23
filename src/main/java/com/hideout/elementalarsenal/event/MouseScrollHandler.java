@@ -23,7 +23,7 @@ public class MouseScrollHandler {
                 if (stack.getItem() instanceof IMultiElementItem item && player.isSneaking()) {
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeItemStack(stack);
-                    buf.writeInt(direction);
+                    buf.writeInt(-direction); // Invert direction to make it more intuitive
                     ClientPlayNetworking.send(ModMessages.ELEMENTAL_ITEM_SWITCH, buf);
 
                     return item.getAvailableTypes(stack).length > 1 ? ActionResult.CONSUME : ActionResult.PASS;

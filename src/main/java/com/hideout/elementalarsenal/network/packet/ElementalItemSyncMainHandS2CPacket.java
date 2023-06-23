@@ -17,11 +17,10 @@ public class ElementalItemSyncMainHandS2CPacket {
         assert player != null;
         ItemStack stack = player.getMainHandStack();
         if (stack.getItem() instanceof IMultiElementItem item) {
-            boolean valid = buf.readInt() > 0 ? item.incrementType(stack) : item.decrementType(stack);
+            stack.setNbt(buf.readNbt());
 
-            if (valid) {
+            if (!stack.hasCustomName())
                 ((InGameHudAccessor) client.inGameHud).setHeldItemTooltipFade((int)(40.0 * client.options.getNotificationDisplayTime().getValue()));
-            }
         }
     }
 }

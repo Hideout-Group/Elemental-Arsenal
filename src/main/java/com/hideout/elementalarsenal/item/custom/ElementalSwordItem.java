@@ -2,15 +2,19 @@ package com.hideout.elementalarsenal.item.custom;
 
 import com.hideout.elementalarsenal.item.custom.interfaces.IMultiElementItem;
 import com.hideout.elementalarsenal.util.ElementalType;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +43,23 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
         ElementalType type = getType(stack);
 
         return super.use(world, user, hand);
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        ElementalType[] types = getAvailableTypes(stack);
+        if (types.length > 0) {
+            if (!Screen.hasShiftDown()) {
+                tooltip.add(Text.literal("Press SHIFT to view elements").formatted(Formatting.YELLOW));
+            } else {
+                for (ElementalType type : types) {
+                    tooltip.add(ElementalType.toFormattedText(type));
+                }
+            }
+
+
+        }
+        super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
