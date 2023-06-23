@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "item/lapis_lazuli"
+    "layer0": "elementalarsenal:item/elemental_gem_lightning"
   }
 }
 

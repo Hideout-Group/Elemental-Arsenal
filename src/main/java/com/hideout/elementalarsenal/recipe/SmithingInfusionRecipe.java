@@ -2,6 +2,7 @@ package com.hideout.elementalarsenal.recipe;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.hideout.elementalarsenal.item.custom.util.IMultiElementItem;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -85,6 +86,9 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
         ItemStack stack = base.copy();
 
         stack.getOrCreateNbt().put(baseNBTKey, addition.getOrCreateNbt().get(additionNBTKey));
+        if (stack.getItem() instanceof IMultiElementItem item) {
+            item.updateTypes(stack);
+        }
         return stack;
     }
 

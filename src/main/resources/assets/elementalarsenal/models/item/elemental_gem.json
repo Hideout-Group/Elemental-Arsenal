@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "item/diamond"
+    "layer0": "elementalarsenal:item/elemental_gem_blank"
   },
   "overrides": [
     {"predicate": {"type": 0.1}, "model": "elementalarsenal:item/elemental_gem/air"},
