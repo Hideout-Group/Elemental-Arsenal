@@ -3,6 +3,7 @@ package com.hideout.elementalarsenal.registry;
 import com.hideout.elementalarsenal.item.ModItems;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 

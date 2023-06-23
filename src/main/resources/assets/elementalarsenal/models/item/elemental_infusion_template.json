@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "item/netherite_upgrade_smithing_template"
+    "layer0": "elementalarsenal:item/elemental_infusion_template"
   }
 }
