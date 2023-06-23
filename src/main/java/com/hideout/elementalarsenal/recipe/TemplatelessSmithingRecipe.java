@@ -19,6 +19,7 @@ A class I was going to use to extend from but that was a bit messy. <br>
 Debating whether to keep it in as you could probably use Ingredient.EMPTY as a template.
  */
 
+@SuppressWarnings("unused")
 public class TemplatelessSmithingRecipe implements SmithingRecipe {
     protected final Identifier id;
     protected final Ingredient base;
@@ -76,9 +77,10 @@ public class TemplatelessSmithingRecipe implements SmithingRecipe {
         return Serializer.INSTANCE;
     }
 
+    @SuppressWarnings("unused")
     public static class Serializer implements RecipeSerializer<TemplatelessSmithingRecipe> {
         private Serializer() {}
-        public static Serializer INSTANCE = new Serializer();
+        public static final Serializer INSTANCE = new Serializer();
         public static final String ID = "templateless_smithing";
 
         @Override

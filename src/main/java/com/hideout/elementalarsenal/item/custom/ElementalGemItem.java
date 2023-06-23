@@ -1,7 +1,7 @@
 package com.hideout.elementalarsenal.item.custom;
 
 import com.hideout.elementalarsenal.ElementalArsenal;
-import com.hideout.elementalarsenal.item.custom.util.IElementalItem;
+import com.hideout.elementalarsenal.item.custom.interfaces.IElementalItem;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -16,7 +16,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
 public class ElementalGemItem extends Item implements IElementalItem {
-    private static final String TYPE = "type";
     public ElementalGemItem(Settings settings) {
         super(settings);
     }
@@ -44,6 +43,11 @@ public class ElementalGemItem extends Item implements IElementalItem {
     public Text getName(ItemStack stack) {
         return Text.literal(getAppendedName(stack))
                 .setStyle(ElementalType.getStyle(getType(stack)));
+    }
+
+    @Override
+    public void setType(ItemStack stack, ElementalType type) {
+        stack.getOrCreateNbt().putInt(TYPE, ElementalType.getId(type));
     }
 
     @Override

@@ -2,10 +2,9 @@ package com.hideout.elementalarsenal.recipe;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.hideout.elementalarsenal.item.custom.util.IMultiElementItem;
+import com.hideout.elementalarsenal.item.custom.interfaces.IMultiElementItem;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
@@ -109,7 +108,7 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
 
     public static class Serializer implements RecipeSerializer<SmithingInfusionRecipe> {
         private Serializer() {}
-        public static Serializer INSTANCE = new Serializer();
+        public static final Serializer INSTANCE = new Serializer();
         public static final String ID = "smithing_infusion";
 
         @Override

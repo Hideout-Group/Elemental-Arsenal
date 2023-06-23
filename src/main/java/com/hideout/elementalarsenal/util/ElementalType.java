@@ -2,7 +2,6 @@ package com.hideout.elementalarsenal.util;
 
 import net.minecraft.text.Style;
 import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
 
 import java.util.HashMap;
 
@@ -34,12 +33,19 @@ public enum ElementalType {
     }
 
     public static ElementalType fromId(int id) {
-        ElementalType type = BLANK;
         for (var entry:
              TYPES.entrySet()) {
-            if (entry.getValue().ID == id) type = entry.getKey();
+            if (entry.getValue().ID == id) return entry.getKey();
         }
-        return type;
+        return null;
+    }
+
+    public static ElementalType fromString(String str) {
+        for (var entry:
+                TYPES.entrySet()) {
+            if (entry.getValue().NAME.equalsIgnoreCase(str)) return entry.getKey();
+        }
+        return null;
     }
 
     public static String toCasedString(ElementalType type) {
