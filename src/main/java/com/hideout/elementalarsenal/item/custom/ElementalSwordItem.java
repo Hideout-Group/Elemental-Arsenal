@@ -53,7 +53,7 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
                 tooltip.add(Text.literal("Press SHIFT to view elements").formatted(Formatting.YELLOW));
             } else {
                 for (ElementalType type : types) {
-                    tooltip.add(ElementalType.toFormattedText(type));
+                    tooltip.add(type.toFormattedText());
                 }
             }
 
@@ -65,12 +65,12 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
     @Override
     public Text getName(ItemStack stack) {
         return Text.literal(getAppendedName(stack))
-                .setStyle(ElementalType.getStyle(getType(stack)));
+                .setStyle(getType(stack).getStyle());
     }
 
     @Override
     public void setType(ItemStack stack, ElementalType type) {
-        stack.getOrCreateNbt().putInt(TYPE, ElementalType.getId(type));
+        stack.getOrCreateNbt().putInt(TYPE, type.getId());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
 
     @Override
     public String getAppendedName(ItemStack stack) {
-        return ElementalType.toCasedString(getType(stack)) + " " + super.getName(stack).getString();
+        return getType(stack).toString() + " " + super.getName(stack).getString();
     }
 
     @Override
@@ -131,9 +131,9 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
         ArrayList<Integer> available = new ArrayList<>(Arrays.stream(getAvailableTypes(stack))
                 .map(ElementalType::getId).toList()); // Java array moment
 
-        if (available.contains(ElementalType.getId(type))) return;
+        if (available.contains(type.getId())) return;
 
-        available.add(ElementalType.getId(type));
+        available.add(type.getId());
         Collections.sort(available); // Sort for consistency
         nbt.putIntArray(AVAILABLE_TYPES, available);
     }

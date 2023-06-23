@@ -3,7 +3,6 @@ package com.hideout.elementalarsenal.mixin;
 import com.hideout.elementalarsenal.ElementalArsenal;
 import com.hideout.elementalarsenal.item.ModItems;
 import com.hideout.elementalarsenal.item.custom.interfaces.IElementalItem;
-import com.hideout.elementalarsenal.item.custom.interfaces.IMultiElementItem;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,13 +12,13 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,6 +26,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity {
+    @Shadow public abstract void setCovetedItem();
+
+    @Shadow public abstract void setStack(ItemStack stack);
+
     public ItemEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -36,8 +39,9 @@ public abstract class ItemEntityMixin extends Entity {
         ItemEntity entity = (ItemEntity)(Object)this;
 
         if (entity.getStack().isOf(ModItems.ELEMENTAL_GEM)) {
-            NbtCompound nbt = entity.getStack().getOrCreateNbt();
-            if (nbt.getInt(IElementalItem.TYPE) != ElementalType.getId(ElementalType.BLANK)) return;
+            ItemStack stack = entity.getStack();
+            IElementalItem item = (IElementalItem) stack.getItem();
+            if (item.getType(stack) != ElementalType.BLANK) return;
             if (source.isIn(DamageTypeTags.IS_FIRE)){ //Convert to Fire
                 if (!entity.getWorld().isClient) {
                     for (BlockPos pos : BlockPos.iterateOutwards(entity.getBlockPos(), 1, 1, 1)) {
@@ -49,8 +53,7 @@ public abstract class ItemEntityMixin extends Entity {
                     entity.getWorld().playSound(null, entity.getBlockPos(),
                             SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS);
                 }
-                nbt.putInt(IElementalItem.TYPE, ElementalType.getId(ElementalType.FIRE));
-                ElementalArsenal.LOGGER.info(ElementalType.toCasedString(ElementalType.fromId(nbt.getInt(IElementalItem.TYPE))));
+                item.setType(stack, ElementalType.FIRE.getId());
             }
         }
     }
@@ -67,7 +70,7 @@ public abstract class ItemEntityMixin extends Entity {
             BlockState state = entity.getWorld().getBlockState(entity.getBlockPos()); // (very) Small microoptimisation, don't have to read the block state 5 times
 
             if (state.isOf(Blocks.GRAVEL)) {
-                item.setType(stack, ElementalType.getId(ElementalType.EARTH));
+                item.setType(stack, ElementalType.EARTH);
                 ElementalArsenal.LOGGER.info(stack.getName().getString());
                 if (!entity.getWorld().isClient) {
                     entity.getWorld().playSound(null,

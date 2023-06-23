@@ -1,6 +1,5 @@
 package com.hideout.elementalarsenal.item.custom;
 
-import com.hideout.elementalarsenal.ElementalArsenal;
 import com.hideout.elementalarsenal.item.custom.interfaces.IElementalItem;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.entity.LivingEntity;
@@ -26,10 +25,9 @@ public class ElementalGemItem extends Item implements IElementalItem {
         ItemStack handItem = user.getMainHandStack(); // I don't know why I had to do this
         NbtCompound nbt = handItem.getOrCreateNbt();
 
-        if (nbt.getInt(TYPE) != ElementalType.getId(ElementalType.BLANK)) return super.useOnEntity(stack, user, entity, hand);
+        if (nbt.getInt(TYPE) != ElementalType.BLANK.getId()) return super.useOnEntity(stack, user, entity, hand);
         if (entity instanceof AnimalEntity)  {
-            nbt.putInt(TYPE, ElementalType.getId(ElementalType.NATURE));
-            ElementalArsenal.LOGGER.info(ElementalType.toCasedString(ElementalType.fromId(nbt.getInt(TYPE))));
+            nbt.putInt(TYPE, ElementalType.NATURE.getId());
             if (!entity.getWorld().isClient) {
                 entity.getWorld().playSound(null,
                         entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.BLOCKS);
@@ -42,12 +40,12 @@ public class ElementalGemItem extends Item implements IElementalItem {
     @Override
     public Text getName(ItemStack stack) {
         return Text.literal(getAppendedName(stack))
-                .setStyle(ElementalType.getStyle(getType(stack)));
+                .setStyle(getType(stack).getStyle());
     }
 
     @Override
     public void setType(ItemStack stack, ElementalType type) {
-        stack.getOrCreateNbt().putInt(TYPE, ElementalType.getId(type));
+        stack.getOrCreateNbt().putInt(TYPE, type.getId());
     }
 
     @Override
@@ -57,6 +55,6 @@ public class ElementalGemItem extends Item implements IElementalItem {
 
     @Override
     public String getAppendedName(ItemStack stack) {
-        return ElementalType.toCasedString(getType(stack)) + " " + super.getName(stack).getString();
+        return getType(stack).toString() + " " + super.getName(stack).getString();
     }
 }

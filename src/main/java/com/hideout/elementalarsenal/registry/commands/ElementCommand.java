@@ -3,9 +3,7 @@ package com.hideout.elementalarsenal.registry.commands;
 import com.hideout.elementalarsenal.item.custom.interfaces.IElementalItem;
 import com.hideout.elementalarsenal.item.custom.interfaces.IMultiElementItem;
 import com.hideout.elementalarsenal.util.ElementalType;
-import com.mojang.brigadier.Message;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandExceptionType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
@@ -83,9 +81,9 @@ public class ElementCommand {
             for (int i = 0; i < types.length; i++) {
                 ElementalType type = types[i];
                 if (i == types.length - 1) {
-                    msg.append(ElementalType.toFormattedText(type));
+                    msg.append(type.toFormattedText());
                 } else {
-                    msg.append(ElementalType.toFormattedText(type).append(", "));
+                    msg.append(type.toFormattedText().append(", "));
                 }
             }
             if (msg.getString().length() > 0)
