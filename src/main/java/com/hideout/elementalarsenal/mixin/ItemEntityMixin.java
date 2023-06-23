@@ -66,6 +66,10 @@ public abstract class ItemEntityMixin extends Entity {
             if (state.isOf(Blocks.GRAVEL)) {
                 nbt.putInt(TYPE, ElementalType.getId(ElementalType.EARTH));
                 ElementalArsenal.LOGGER.info(ElementalType.toCasedString(ElementalType.fromId(nbt.getInt(TYPE))));
+                if (!entity.getWorld().isClient) {
+                    entity.getWorld().playSound(null,
+                            entity.getBlockPos(), SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS);
+                }
                 return;
             }
 
@@ -74,7 +78,7 @@ public abstract class ItemEntityMixin extends Entity {
                 ElementalArsenal.LOGGER.info(ElementalType.toCasedString(ElementalType.fromId(nbt.getInt(TYPE))));
                 if (!entity.getWorld().isClient) {
                     entity.getWorld().playSound(null,
-                            entity.getBlockPos(), SoundEvents.BLOCK_POWDER_SNOW_STEP, SoundCategory.BLOCKS);
+                            entity.getBlockPos(), SoundEvents.BLOCK_POWDER_SNOW_FALL, SoundCategory.BLOCKS);
                 }
                 return;
             }
@@ -84,7 +88,7 @@ public abstract class ItemEntityMixin extends Entity {
                 ElementalArsenal.LOGGER.info(ElementalType.toCasedString(ElementalType.fromId(nbt.getInt(TYPE))));
                 if (!entity.getWorld().isClient) {
                     entity.getWorld().playSound(null,
-                            entity.getBlockPos(), SoundEvents.BLOCK_BUBBLE_COLUMN_BUBBLE_POP, SoundCategory.BLOCKS);
+                            entity.getBlockPos(), SoundEvents.AMBIENT_UNDERWATER_ENTER, SoundCategory.BLOCKS);
                 }
                 return;
             }
