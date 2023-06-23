@@ -24,12 +24,11 @@ public class ElementalGemItem extends Item implements IElementalItem {
         if (hand.equals(Hand.OFF_HAND)) return super.useOnEntity(stack, user, entity, hand);
         ItemStack handItem = user.getMainHandStack(); // I don't know why I had to do this
         NbtCompound nbt = handItem.getOrCreateNbt();
-        ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt(TYPE)));
 
         if (nbt.getInt(TYPE) != ElementalType.getId(ElementalType.BLANK)) return super.useOnEntity(stack, user, entity, hand);
         if (entity instanceof AnimalEntity)  {
             nbt.putInt(TYPE, ElementalType.getId(ElementalType.NATURE));
-            ElementalArsenal.LOGGER.info(String.valueOf(nbt.getInt(TYPE)));
+            ElementalArsenal.LOGGER.info(ElementalType.toCasedString(ElementalType.fromId(nbt.getInt(TYPE))));
         }
 
         return super.useOnEntity(stack, user, entity, hand);
