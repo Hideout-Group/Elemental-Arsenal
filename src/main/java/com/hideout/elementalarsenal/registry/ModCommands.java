@@ -22,7 +22,19 @@ public class ModCommands {
                                                 new int[] {0, 1, 2, 3, 4, 5, 6, 7});
                                         sender.giveItemStack(stack);
                                         return 1;
-                                    }))));
+                                    }))
+                            .then(literal("all_gems")
+                                    .executes(context -> {
+                                        final ServerCommandSource source = context.getSource();
+                                        final ServerPlayerEntity sender = source.getPlayerOrThrow();
+                                        for (int i = 0; i < 8; i++) {
+                                            ItemStack stack = new ItemStack(ModItems.ELEMENTAL_GEM);
+                                            stack.getOrCreateNbt().putInt("type", i);
+                                            sender.giveItemStack(stack);
+                                        }
+
+                                        return 1;
+                            }))));
         }));
     }
 }
