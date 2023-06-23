@@ -43,7 +43,7 @@ public class ElementalGemItem extends Item implements IElementalItem {
     @Override
     public Text getName(ItemStack stack) {
         return Text.literal(getAppendedName(stack))
-                .formatted(ElementalType.getFormattings(getType(stack)));
+                .setStyle(ElementalType.getStyle(getType(stack)));
     }
 
     @Override

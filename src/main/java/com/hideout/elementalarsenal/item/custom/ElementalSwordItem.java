@@ -1,5 +1,6 @@
 package com.hideout.elementalarsenal.item.custom;
 
+import com.hideout.elementalarsenal.ElementalArsenal;
 import com.hideout.elementalarsenal.item.custom.util.IMultiElementItem;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,8 +36,8 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
     @Override
     public void onCraft(ItemStack stack, World world, PlayerEntity player) {
         NbtCompound nbt = stack.getOrCreateNbt();
-
         addType(stack, nbt.getInt(TYPE));
+        System.out.println("Crafted");
         super.onCraft(stack, world, player);
     }
 
@@ -52,6 +53,7 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
 
         NbtCompound nbt = stack.getOrCreateNbt();
         nbt.putInt(TYPE, ElementalType.getId(getAvailableTypes(stack)[(getIndexOfType(stack, nbt.getInt(TYPE)) + 1) % getAvailableTypes(stack).length]));
+        System.out.println(Arrays.toString(getAvailableTypes(stack)));
 
         return super.use(world, user, hand);
     }
@@ -59,7 +61,7 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
     @Override
     public Text getName(ItemStack stack) {
         return Text.literal(getAppendedName(stack))
-                .formatted(ElementalType.getFormattings(getType(stack)));
+                .setStyle(ElementalType.getStyle(getType(stack)));
     }
 
     @Override
@@ -75,6 +77,14 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
     @Override
     public ElementalType[] getAvailableTypes(ItemStack stack) {
         return Arrays.stream(stack.getOrCreateNbt().getIntArray(AVAILABLE_TYPES)).mapToObj(ElementalType::fromId).toArray(ElementalType[]::new);
+    }
+
+    @Override
+    public void updateTypes(ItemStack stack) {
+        NbtCompound nbt = stack.getOrCreateNbt();
+        if (!Arrays.stream(getAvailableTypes(stack)).toList().contains(ElementalType.fromId(nbt.getInt(TYPE)))) {
+            addType(stack, nbt.getInt(TYPE));
+        }
     }
 
     private void addType(ItemStack stack, int type) {
@@ -96,6 +106,7 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
     }
 
     private int getIndexOfType(ItemStack stack, int type) {
+        System.out.println(type);
         var available = Arrays.stream(getAvailableTypes(stack)).map(ElementalType::getId).toList();
         if (!available.contains(type)) {
             throw new IllegalArgumentException("There is no type of that index");

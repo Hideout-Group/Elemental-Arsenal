@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "item/emerald"
+    "layer0": "elementalarsenal:item/elemental_gem_fire"
   }
 }
 

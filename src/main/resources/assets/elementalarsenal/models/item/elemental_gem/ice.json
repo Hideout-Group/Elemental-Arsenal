@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "item/snowball"
+    "layer0": "elementalarsenal:item/elemental_gem_ice"
   }
 }
 
