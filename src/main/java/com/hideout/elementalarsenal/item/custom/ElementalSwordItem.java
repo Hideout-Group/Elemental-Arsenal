@@ -3,6 +3,7 @@ package com.hideout.elementalarsenal.item.custom;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
+import com.hideout.elementalarsenal.item.custom.util.ElementalSwordRightClickEffects;
 import com.hideout.elementalarsenal.util.ElementalOnHitEffects;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.client.gui.screen.Screen;
@@ -59,6 +60,12 @@ public class ElementalSwordItem extends SwordItem implements MultiElementItem {
 
         ItemStack stack = user.getMainHandStack();
         ElementalType type = getType(stack);
+
+        int cooldown = ElementalSwordRightClickEffects.performRightClickEffect(type, world, user);
+
+        if (cooldown > 0) {
+            user.getItemCooldownManager().set(this, cooldown);
+        }
 
         return super.use(world, user, hand);
     }
