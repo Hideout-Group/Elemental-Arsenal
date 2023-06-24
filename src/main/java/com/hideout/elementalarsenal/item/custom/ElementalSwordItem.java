@@ -43,7 +43,6 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
 
         ItemStack stack = user.getMainHandStack();
         ElementalType type = getType(stack);
-        System.out.println(type.toString());
 
         return super.use(world, user, hand);
     }

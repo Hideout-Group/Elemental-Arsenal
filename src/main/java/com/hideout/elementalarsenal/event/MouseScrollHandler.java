@@ -26,14 +26,12 @@ public class MouseScrollHandler {
             ItemStack stack = player.getMainHandStack();
             if (stack.getItem() instanceof IMultiElementItem item && player.isSneaking()) {
 
-                System.out.println("Sending switch packet");
                 boolean valid;
                 if (direction > 0) {
                     valid = item.incrementType(stack);
                 } else {
                     valid = item.decrementType(stack);
                 }
-                System.out.println("Client: " + item.getType(stack).toString());
 
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeNbt(stack.getNbt());
