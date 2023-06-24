@@ -31,6 +31,8 @@ loom {
 			runDir "build/datagen"
 		}
 	}
+
+	accessWidenerPath = file("src/main/resources/elementalarsenal.accesswidener")
 }
 
 // Add the generated resources to the main source set
