@@ -9,5 +9,7 @@
   "element.elementalarsenal.fire": "Fire",
   "element.elementalarsenal.lightning": "Lightning",
   "element.elementalarsenal.nature": "Nature",
-  "element.elementalarsenal.ice": "Ice"
+  "element.elementalarsenal.ice": "Ice",
+
+  "effect.elementalarsenal.electrified": "Electrified"
 }

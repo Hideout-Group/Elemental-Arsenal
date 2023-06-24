@@ -1,5 +1,6 @@
 package com.hideout.elementalarsenal;
 
+import com.hideout.elementalarsenal.effect.ModStatusEffects;
 import com.hideout.elementalarsenal.item.ModItemGroups;
 import com.hideout.elementalarsenal.item.ModItems;
 import com.hideout.elementalarsenal.network.ModMessages;
@@ -28,6 +29,8 @@ public class ElementalArsenal implements ModInitializer {
 
 		ModRegistries.registerRegistries();
 		ModRecipes.registerRecipes();
+
+		ModStatusEffects.registerStatusEffects();
 
 		ModMessages.registerC2SPackets();
 		LOGGER.info("Hello Fabric world!");

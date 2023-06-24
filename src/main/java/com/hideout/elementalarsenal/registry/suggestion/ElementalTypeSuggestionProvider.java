@@ -19,6 +19,7 @@ public class ElementalTypeSuggestionProvider implements SuggestionProvider<Serve
         builder.suggest(ElementalType.EARTH.toString());
         builder.suggest(ElementalType.WATER.toString());
         builder.suggest(ElementalType.FIRE.toString());
+        builder.suggest(ElementalType.LIGHTNING.toString());
         builder.suggest(ElementalType.NATURE.toString());
         builder.suggest(ElementalType.ICE.toString());
         return builder.buildFuture();
