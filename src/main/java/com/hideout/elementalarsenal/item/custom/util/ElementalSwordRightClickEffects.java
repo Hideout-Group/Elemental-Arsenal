@@ -36,14 +36,26 @@ public class ElementalSwordRightClickEffects {
 
     private static int air(World world, PlayerEntity player) {
         int cooldown = 0;
-        if (player.isFallFlying()) {
+        if (player.isSneaking()) {
+            Vec3d rotVec = player.getRotationVector();
+            Box box = new Box(player.getBlockPos()).expand(3);
+            List<Entity> entities = world.getOtherEntities(player, box);
+
+            entities.forEach(entity -> {
+                if (player.canSee(entity)) {
+                    entity.addVelocity(rotVec.multiply(2));
+                }
+            });
+
+            cooldown = (int) (DEFAULT_COOLDOWN * 0.75f);
+        } else if (player.isFallFlying()) {
             Vec3d rotVec = player.getRotationVector();
             player.addVelocity(rotVec.multiply(1.5, 1.5, 1.5));
             player.velocityModified = true;
             cooldown = DEFAULT_COOLDOWN * 12;
         } else {
             Vec3d rotVec = player.getRotationVector();
-            Vec3d offsetVec = player.getEyePos().add(rotVec);
+            Vec3d offsetVec = player.getEyePos().add(rotVec.multiply(2));
             Box box = new Box(player.getBlockPos()).expand(3);
             List<Entity> entities = world.getOtherEntities(player, box);
 
@@ -66,7 +78,7 @@ public class ElementalSwordRightClickEffects {
             cooldown = player.isOnGround() ? DEFAULT_COOLDOWN / 2 : DEFAULT_COOLDOWN;
         }
 
-        world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_POWDER_SNOW_PLACE,
+        world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_POWDER_SNOW_STEP,
                 SoundCategory.PLAYERS, 1f, 1.5f);
 
         return cooldown;
