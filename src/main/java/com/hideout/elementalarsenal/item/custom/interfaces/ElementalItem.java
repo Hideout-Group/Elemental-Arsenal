@@ -3,7 +3,7 @@ package com.hideout.elementalarsenal.item.custom.interfaces;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.item.ItemStack;
 
-public interface IElementalItem {
+public interface ElementalItem {
     String TYPE = "elementalarsenal:type";
     void setType(ItemStack stack, ElementalType type);
     default void setType(ItemStack stack, int type) {

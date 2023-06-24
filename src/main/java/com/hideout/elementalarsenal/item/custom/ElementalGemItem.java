@@ -1,6 +1,6 @@
 package com.hideout.elementalarsenal.item.custom;
 
-import com.hideout.elementalarsenal.item.custom.interfaces.IElementalItem;
+import com.hideout.elementalarsenal.item.custom.interfaces.ElementalItem;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
-public class ElementalGemItem extends Item implements IElementalItem {
+public class ElementalGemItem extends Item implements ElementalItem {
     public ElementalGemItem(Settings settings) {
         super(settings);
     }

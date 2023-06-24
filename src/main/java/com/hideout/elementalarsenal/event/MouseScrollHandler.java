@@ -1,7 +1,7 @@
 package com.hideout.elementalarsenal.event;
 
 import com.hideout.elementalarsenal.event.custom.MouseScrollCallback;
-import com.hideout.elementalarsenal.item.custom.interfaces.IMultiElementItem;
+import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
 import com.hideout.elementalarsenal.network.ModMessages;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -24,7 +24,7 @@ public class MouseScrollHandler {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null) {
             ItemStack stack = player.getMainHandStack();
-            if (stack.getItem() instanceof IMultiElementItem item && player.isSneaking()) {
+            if (stack.getItem() instanceof MultiElementItem item && player.isSneaking()) {
 
                 boolean valid;
                 if (direction > 0) {

@@ -2,7 +2,7 @@ package com.hideout.elementalarsenal.mixin;
 
 import com.hideout.elementalarsenal.ElementalArsenal;
 import com.hideout.elementalarsenal.item.ModItems;
-import com.hideout.elementalarsenal.item.custom.interfaces.IElementalItem;
+import com.hideout.elementalarsenal.item.custom.interfaces.ElementalItem;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -39,7 +39,7 @@ public abstract class ItemEntityMixin extends Entity {
 
         if (entity.getStack().isOf(ModItems.ELEMENTAL_GEM)) {
             ItemStack stack = entity.getStack();
-            IElementalItem item = (IElementalItem) stack.getItem();
+            ElementalItem item = (ElementalItem) stack.getItem();
             if (item.getType(stack) != ElementalType.BLANK) return;
             if (source.isIn(DamageTypeTags.IS_FIRE)){ //Convert to Fire
                 if (!entity.getWorld().isClient) {
@@ -63,7 +63,7 @@ public abstract class ItemEntityMixin extends Entity {
 
         if (entity.getStack().isOf(ModItems.ELEMENTAL_GEM)) {
             ItemStack stack = entity.getStack();
-            IElementalItem item = (IElementalItem) stack.getItem();
+            ElementalItem item = (ElementalItem) stack.getItem();
             if (item.getType(stack) != ElementalType.BLANK) return;
 
             BlockState state = entity.getWorld().getBlockState(entity.getBlockPos()); // (very) Small microoptimisation, don't have to read the block state 5 times

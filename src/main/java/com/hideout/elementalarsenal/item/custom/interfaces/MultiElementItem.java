@@ -2,12 +2,11 @@ package com.hideout.elementalarsenal.item.custom.interfaces;
 
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 
 import java.util.Arrays;
 import java.util.List;
 
-public interface IMultiElementItem extends IElementalItem {
+public interface MultiElementItem extends ElementalItem {
     String AVAILABLE_TYPES = "elementalarsenal:available_types";
     ElementalType[] getAvailableTypes(ItemStack stack);
     void addType(ItemStack stack, ElementalType type);

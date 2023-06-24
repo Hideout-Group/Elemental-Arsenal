@@ -1,7 +1,7 @@
 package com.hideout.elementalarsenal.registry.commands;
 
-import com.hideout.elementalarsenal.item.custom.interfaces.IElementalItem;
-import com.hideout.elementalarsenal.item.custom.interfaces.IMultiElementItem;
+import com.hideout.elementalarsenal.item.custom.interfaces.ElementalItem;
+import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
 import com.hideout.elementalarsenal.util.ElementalType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -20,7 +20,7 @@ public class ElementCommand {
         ServerPlayerEntity player = source.getPlayerOrThrow();
         String type = context.getArgument("type", String.class);
 
-        if (player.getMainHandStack().getItem() instanceof IMultiElementItem item) {
+        if (player.getMainHandStack().getItem() instanceof MultiElementItem item) {
             ElementalType selectedType = ElementalType.fromString(type);
             if (selectedType == null) throw new RuntimeException("No type with name: " + type);
             item.addType(player.getMainHandStack(), selectedType);
@@ -37,13 +37,13 @@ public class ElementCommand {
         String type = context.getArgument("type", String.class);
         ItemStack stack = player.getMainHandStack();
 
-        if (stack.getItem() instanceof IMultiElementItem item) {
+        if (stack.getItem() instanceof MultiElementItem item) {
             ElementalType selectedType = ElementalType.fromString(type);
             if (selectedType == null) throw new RuntimeException("No type with name: " + type);
             if (item.getAvailableTypes(stack).length > 0) {
                 ArrayList<ElementalType> types = new ArrayList<>(Arrays.stream(item.getAvailableTypes(stack)).toList());
                 types.remove(selectedType);
-                stack.getOrCreateNbt().putIntArray(IMultiElementItem.AVAILABLE_TYPES, types.stream().map(ElementalType::getId).toList());
+                stack.getOrCreateNbt().putIntArray(MultiElementItem.AVAILABLE_TYPES, types.stream().map(ElementalType::getId).toList());
                 return 1;
             }
 
@@ -58,7 +58,7 @@ public class ElementCommand {
         ServerPlayerEntity player = source.getPlayerOrThrow();
         String type = context.getArgument("type", String.class);
 
-        if (player.getMainHandStack().getItem() instanceof IElementalItem item) {
+        if (player.getMainHandStack().getItem() instanceof ElementalItem item) {
             ElementalType selectedType = ElementalType.fromString(type);
             if (selectedType == null) throw new RuntimeException("No type with name: " + type);
             item.setType(player.getMainHandStack(), selectedType);
@@ -74,7 +74,7 @@ public class ElementCommand {
         ServerPlayerEntity player = source.getPlayerOrThrow();
         ItemStack stack = player.getMainHandStack();
 
-        if (stack.getItem() instanceof IMultiElementItem item) {
+        if (stack.getItem() instanceof MultiElementItem item) {
             MutableText msg = Text.literal("");
             ElementalType[] types = item.getAvailableTypes(stack);
 

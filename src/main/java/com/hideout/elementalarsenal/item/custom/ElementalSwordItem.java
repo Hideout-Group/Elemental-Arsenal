@@ -1,16 +1,16 @@
 package com.hideout.elementalarsenal.item.custom;
 
-import com.hideout.elementalarsenal.item.custom.interfaces.IMultiElementItem;
+import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
+import com.hideout.elementalarsenal.util.ElementalOnHitEffects;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.SmithingTransformRecipe;
-import net.minecraft.recipe.SmithingTrimRecipe;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
+public class ElementalSwordItem extends SwordItem implements MultiElementItem {
     public ElementalSwordItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
         super(toolMaterial, attackDamage, attackSpeed, settings);
     }
@@ -33,6 +33,16 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
         ItemStack stack = new ItemStack(this);
         addType(stack, ElementalType.BLANK);
         return stack;
+    }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (target.getWorld().isClient) return super.postHit(stack, target, attacker);
+        ElementalType type = getType(stack);
+
+        ElementalOnHitEffects.performOnHitEffect(type, target, attacker);
+
+        return super.postHit(stack, target, attacker);
     }
 
     @Override

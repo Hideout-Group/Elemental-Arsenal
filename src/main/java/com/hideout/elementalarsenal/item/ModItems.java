@@ -14,7 +14,7 @@ import net.minecraft.util.Rarity;
 
 public class ModItems {
     public static final Item ELEMENTAL_SWORD = registerItem("elemental_sword",
-            new ElementalSwordItem(ToolMaterials.IRON, 7, 1.6f, new FabricItemSettings()));
+            new ElementalSwordItem(ToolMaterials.IRON, 3, -2.4f, new FabricItemSettings()));
     public static final Item ELEMENTAL_GEM = registerItem("elemental_gem",
             new ElementalGemItem(new FabricItemSettings().fireproof().maxCount(1).rarity(Rarity.COMMON)));
     public static final Item ELEMENTAL_INFUSION_TEMPLATE = registerItem("elemental_infusion_template",
