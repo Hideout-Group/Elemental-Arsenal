@@ -20,14 +20,29 @@ public enum ElementalType {
     private final static HashMap<ElementalType, Wrapper> TYPES = new HashMap<>();
 
     static {
-        TYPES.put(BLANK, new Wrapper(0, "element.elementalarsenal.blank", Style.EMPTY.withColor(TextColor.parse("#DADADA"))));
-        TYPES.put(AIR, new Wrapper(1, "element.elementalarsenal.air", Style.EMPTY.withColor(TextColor.parse("#50BF8A"))));
-        TYPES.put(EARTH, new Wrapper(2, "element.elementalarsenal.earth", Style.EMPTY.withColor(TextColor.parse("#C29938"))));
-        TYPES.put(WATER, new Wrapper(3, "element.elementalarsenal.water", Style.EMPTY.withColor(TextColor.parse("#1CC0C9"))));
-        TYPES.put(FIRE, new Wrapper(4, "element.elementalarsenal.fire", Style.EMPTY.withColor(TextColor.parse("#D75D24"))));
-        TYPES.put(LIGHTNING, new Wrapper(5, "element.elementalarsenal.lightning", Style.EMPTY.withColor(TextColor.parse("#6E3986"))));
-        TYPES.put(NATURE, new Wrapper(6, "element.elementalarsenal.nature", Style.EMPTY.withColor(TextColor.parse("#1EA521"))));
-        TYPES.put(ICE, new Wrapper(7, "element.elementalarsenal.ice", Style.EMPTY.withColor(TextColor.parse("#A0E9E5"))));
+        TYPES.put(BLANK, new Wrapper(0, "element.elementalarsenal.blank",
+                Style.EMPTY.withColor(TextColor.parse("#DADADA"))));
+
+        TYPES.put(AIR, new Wrapper(1, "element.elementalarsenal.air",
+                Style.EMPTY.withColor(TextColor.parse("#50BF8A"))));
+
+        TYPES.put(EARTH, new Wrapper(2, "element.elementalarsenal.earth",
+                Style.EMPTY.withColor(TextColor.parse("#C29938"))));
+
+        TYPES.put(WATER, new Wrapper(3, "element.elementalarsenal.water",
+                Style.EMPTY.withColor(TextColor.parse("#1CC0C9"))));
+
+        TYPES.put(FIRE, new Wrapper(4, "element.elementalarsenal.fire",
+                Style.EMPTY.withColor(TextColor.parse("#D75D24"))));
+
+        TYPES.put(LIGHTNING, new Wrapper(5, "element.elementalarsenal.lightning",
+                Style.EMPTY.withColor(TextColor.parse("#6E3986"))));
+
+        TYPES.put(NATURE, new Wrapper(6, "element.elementalarsenal.nature",
+                Style.EMPTY.withColor(TextColor.parse("#1EA521"))));
+
+        TYPES.put(ICE, new Wrapper(7, "element.elementalarsenal.ice",
+                Style.EMPTY.withColor(TextColor.parse("#A0E9E5"))));
     }
 
     public static ElementalType fromId(int id) {
@@ -46,10 +61,6 @@ public enum ElementalType {
         return null;
     }
 
-    public String toString() {
-        return toFormattedText().getString();
-    }
-
     public int getId() {
         return TYPES.get(this).ID;
     }
@@ -57,13 +68,18 @@ public enum ElementalType {
     public String getTranslationKey() {
         return TYPES.get(this).TRANSLATION_KEY;
     }
-    public MutableText toFormattedText() {
-        return Text.translatable(getTranslationKey()).setStyle(getStyle());
-    }
-
     public Style getStyle() {
         return TYPES.get(this).STYLE;
     }
+
+    public MutableText toFormattedText() {
+        return Text.translatable(getTranslationKey()).setStyle(getStyle());
+    }
+    public String toString() {
+        return toFormattedText().getString();
+    }
+
+
 
     private static class Wrapper {
         public final int ID;

@@ -1,19 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "elementalarsenal:item/elemental_gem_blank"
-  },
-  "overrides": [
-    {"predicate": {"type": 0.1}, "model": "elementalarsenal:item/elemental_gem/air"},
-    {"predicate": {"type": 0.2}, "model": "elementalarsenal:item/elemental_gem/earth"},
-    {"predicate": {"type": 0.3}, "model": "elementalarsenal:item/elemental_gem/water"},
-    {"predicate": {"type": 0.4}, "model": "elementalarsenal:item/elemental_gem/fire"},
-    {"predicate": {"type": 0.5}, "model": "elementalarsenal:item/elemental_gem/lightning"},
-    {"predicate": {"type": 0.6}, "model": "elementalarsenal:item/elemental_gem/nature"},
-    {"predicate": {"type": 0.7}, "model": "elementalarsenal:item/elemental_gem/ice"}
-  ]
+    "layer0": "elementalarsenal:item/elemental_gem"
+  }
 }
-
-
-
-

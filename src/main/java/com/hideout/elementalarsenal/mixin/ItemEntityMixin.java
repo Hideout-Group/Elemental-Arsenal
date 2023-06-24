@@ -61,7 +61,7 @@ public abstract class ItemEntityMixin extends Entity {
 
                     entity.setVelocity(xVelocity, yVelocity, zVelocity);
                 }
-                item.setType(stack, ElementalType.FIRE.getId());
+                item.setType(stack, ElementalType.FIRE);
             }
 
             return;

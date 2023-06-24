@@ -25,26 +25,22 @@ public interface MultiElementItem extends ElementalItem {
         return getIndexOfType(stack, ElementalType.fromId(type));
     }
 
-    default boolean incrementType(ItemStack stack) {
-        int length = getAvailableTypes(stack).length;
-        if (length == 0) return false;
-
-
-        int index = getIndexOfType(stack, getType(stack));
-        int newIndex = (index + 1) % length;
-        setType(stack, getAvailableTypes(stack)[newIndex]);
-        return true;
+    default boolean incrementType(ItemStack stack, int amount) {
+        return slideType(stack, amount);
     }
 
-    default boolean decrementType(ItemStack stack) {
+    default boolean decrementType(ItemStack stack, int amount) {
+        return slideType(stack, -amount);
+    }
+
+    private boolean slideType(ItemStack stack, int amount) {
         int length = getAvailableTypes(stack).length;
         if (length == 0) return false;
 
 
         int index = getIndexOfType(stack, getType(stack));
-        int newIndex = (index + length - 1) % length;
+        int newIndex = (index + length + amount) % length;
         setType(stack, getAvailableTypes(stack)[newIndex]);
-
         return true;
     }
 

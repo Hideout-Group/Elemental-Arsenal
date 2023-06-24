@@ -2,6 +2,7 @@ package com.hideout.elementalarsenal.event;
 
 import com.hideout.elementalarsenal.event.custom.MouseScrollCallback;
 import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
+import com.hideout.elementalarsenal.mixin.InGameHudAccessor;
 import com.hideout.elementalarsenal.network.ModMessages;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -28,15 +29,20 @@ public class MouseScrollHandler {
 
                 boolean valid;
                 if (direction > 0) {
-                    valid = item.incrementType(stack);
+                    valid = item.incrementType(stack, 1);
                 } else {
-                    valid = item.decrementType(stack);
+                    valid = item.decrementType(stack, 1);
                 }
 
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeNbt(stack.getNbt());
-                buf.writeInt(player.getInventory().selectedSlot);
-                ClientPlayNetworking.send(ModMessages.ELEMENTAL_ITEM_SWITCH, buf);
+                if (valid) {
+                    ((InGameHudAccessor) MinecraftClient.getInstance().inGameHud).setHeldItemTooltipFade(
+                            (int)(40.0 * MinecraftClient.getInstance().options.getNotificationDisplayTime().getValue())); // Default
+
+                    PacketByteBuf buf = PacketByteBufs.create();
+                    buf.writeNbt(stack.getNbt());
+                    buf.writeInt(player.getInventory().selectedSlot);
+                    ClientPlayNetworking.send(ModMessages.ELEMENTAL_ITEM_SWITCH, buf);
+                }
 
 
                 return valid ? ActionResult.CONSUME : ActionResult.PASS;

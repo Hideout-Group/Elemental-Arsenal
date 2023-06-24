@@ -23,11 +23,10 @@ public class ElementalGemItem extends Item implements ElementalItem {
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         if (hand.equals(Hand.OFF_HAND)) return super.useOnEntity(stack, user, entity, hand);
         ItemStack handItem = user.getMainHandStack(); // I don't know why I had to do this
-        NbtCompound nbt = handItem.getOrCreateNbt();
 
-        if (nbt.getInt(TYPE) != ElementalType.BLANK.getId()) return super.useOnEntity(stack, user, entity, hand);
+        if (getType(stack) != ElementalType.BLANK) return super.useOnEntity(stack, user, entity, hand);
         if (entity instanceof AnimalEntity)  {
-            nbt.putInt(TYPE, ElementalType.NATURE.getId());
+            setType(handItem, ElementalType.NATURE);
             if (!entity.getWorld().isClient) {
                 entity.getWorld().playSound(null,
                         entity.getBlockPos(), SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.BLOCKS);

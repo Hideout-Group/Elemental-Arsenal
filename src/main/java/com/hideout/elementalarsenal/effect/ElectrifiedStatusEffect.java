@@ -1,7 +1,6 @@
 package com.hideout.elementalarsenal.effect;
 
 import com.hideout.elementalarsenal.util.ElementalType;
-import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;

@@ -1,11 +1,17 @@
 package com.hideout.elementalarsenal.item.custom;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
 import com.hideout.elementalarsenal.util.ElementalOnHitEffects;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -81,6 +87,35 @@ public class ElementalSwordItem extends SwordItem implements MultiElementItem {
     @Override
     public void setType(ItemStack stack, ElementalType type) {
         stack.getOrCreateNbt().putInt(TYPE, type.getId());
+    }
+
+    @Override
+    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
+        if (slot != EquipmentSlot.MAINHAND) return ImmutableMultimap.of();
+
+        ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+
+        float damage = getAttackDamage();
+
+        switch (getType(stack)) {
+            case BLANK -> damage--; // No element so shouldn't be strong
+            case FIRE, LIGHTNING, ICE -> damage++; // 'Offensive' types
+            case EARTH -> damage += 3; // Heavy hitter but slow
+        }
+
+        float attackSpeed = -2.4f;
+
+        switch (getType(stack)) {
+            case EARTH -> attackSpeed -= 0.6f;
+            case LIGHTNING -> attackSpeed += 0.4f;
+        }
+
+        builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID,
+                "Weapon modifier", damage, EntityAttributeModifier.Operation.ADDITION));
+        builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID,
+                "Weapon modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
+
+        return builder.build();
     }
 
     @Override

@@ -8,6 +8,7 @@ public class ElementalArsenalClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ModModelPredicateProvider.registerModelPredicates();
+        ModColorProvider.registerColors();
         ModEvents.registerClientEvents();
 
         ModMessages.registerS2CPackets();
