@@ -12,6 +12,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -41,7 +42,7 @@ public abstract class ItemEntityMixin extends Entity {
             ItemStack stack = entity.getStack();
             ElementalItem item = (ElementalItem) stack.getItem();
             if (item.getType(stack) != ElementalType.BLANK) return;
-            if (source.isIn(DamageTypeTags.IS_FIRE)){ //Convert to Fire
+            if (source.isIn(DamageTypeTags.IS_FIRE)){ // The item is in fire
                 if (!entity.getWorld().isClient) {
                     for (BlockPos pos : BlockPos.iterateOutwards(entity.getBlockPos(), 1, 1, 1)) {
                         if (entity.getWorld().getBlockState(pos).isOf(Blocks.FIRE)) {
@@ -51,8 +52,33 @@ public abstract class ItemEntityMixin extends Entity {
 
                     entity.getWorld().playSound(null, entity.getBlockPos(),
                             SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS);
+
+                    // Make the item pop up
+                    World world = entity.getWorld();
+                    float xVelocity = (world.getRandom().nextFloat() - 0.5f) * 0.1f;
+                    float yVelocity = world.getRandom().nextFloat() * 0.1f;
+                    float zVelocity = (world.getRandom().nextFloat() - 0.5f) * 0.1f;
+
+                    entity.setVelocity(xVelocity, yVelocity, zVelocity);
                 }
                 item.setType(stack, ElementalType.FIRE.getId());
+            }
+
+            return;
+        }
+
+        if (entity.getStack().isOf(Items.IRON_INGOT)) {
+            if (source.isIn(DamageTypeTags.IS_FIRE)) {
+                if (!entity.getWorld().isClient) {
+                    ItemStack newStack = new ItemStack(ModItems.SCORCHED_IRON, entity.getStack().getCount());
+                    entity.setStack(newStack);
+                    World world = entity.getWorld();
+                    float xVelocity = (world.getRandom().nextFloat() - 0.5f) * 0.4f;
+                    float yVelocity = world.getRandom().nextFloat() * 0.2f + 0.2f;
+                    float zVelocity = (world.getRandom().nextFloat() - 0.5f) * 0.4f;
+
+                    entity.setVelocity(xVelocity, yVelocity, zVelocity);
+                }
             }
         }
     }

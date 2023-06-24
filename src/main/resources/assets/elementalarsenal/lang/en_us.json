@@ -2,6 +2,11 @@
   "item.elementalarsenal.elemental_sword": "Elemental Sword",
   "item.elementalarsenal.elemental_gem": "Elemental Gem",
 
+  "item.elementalarsenal.scorched_iron": "Scorched Iron",
+
+  "itemGroup.elementalarsenal.group": "Elemental Arsenal",
+
+
   "element.elementalarsenal.blank": "Blank",
   "element.elementalarsenal.air": "Air",
   "element.elementalarsenal.earth": "Earth",

@@ -4,16 +4,16 @@
     "#": {
       "item": "elementalarsenal:scorched_iron"
     },
-    "D": {
-      "item": "diamond"
+    "I": {
+      "item": "minecraft:iron_ingot"
     }
   },
   "pattern": [
     "###",
-    "#D#",
+    "#I#",
     "###"
   ],
   "result": {
-    "item": "elementalarsenal:elemental_gem"
+    "item": "elementalarsenal:elemental_infusion_template"
   }
 }

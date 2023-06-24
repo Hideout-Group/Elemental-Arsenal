@@ -4,16 +4,16 @@
     "#": {
       "item": "elementalarsenal:scorched_iron"
     },
-    "D": {
-      "item": "diamond"
+    "S": {
+      "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "###",
-    "#D#",
-    "###"
+    " # ",
+    " # ",
+    " S "
   ],
   "result": {
-    "item": "elementalarsenal:elemental_gem"
+    "item": "elementalarsenal:elemental_sword"
   }
 }
