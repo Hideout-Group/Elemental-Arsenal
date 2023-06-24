@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.recipe.SmithingTransformRecipe;
+import net.minecraft.recipe.SmithingTrimRecipe;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -41,6 +43,7 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
 
         ItemStack stack = user.getMainHandStack();
         ElementalType type = getType(stack);
+        System.out.println(type.toString());
 
         return super.use(world, user, hand);
     }
@@ -56,8 +59,6 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
                     tooltip.add(type.toFormattedText());
                 }
             }
-
-
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
@@ -86,39 +87,6 @@ public class ElementalSwordItem extends SwordItem implements IMultiElementItem {
     @Override
     public ElementalType[] getAvailableTypes(ItemStack stack) {
         return Arrays.stream(stack.getOrCreateNbt().getIntArray(AVAILABLE_TYPES)).mapToObj(ElementalType::fromId).toArray(ElementalType[]::new);
-    }
-
-    @Override
-    public void updateTypes(ItemStack stack) {
-        NbtCompound nbt = stack.getOrCreateNbt();
-        if (!Arrays.stream(getAvailableTypes(stack)).toList().contains(ElementalType.fromId(nbt.getInt(TYPE)))) {
-            addType(stack, nbt.getInt(TYPE));
-        }
-    }
-
-    @Override
-    public boolean incrementType(ItemStack stack) {
-        int length = getAvailableTypes(stack).length;
-        if (length == 0) return false;
-
-        NbtCompound nbt = stack.getOrCreateNbt();
-        int index = getIndexOfType(stack, nbt.getInt(TYPE));
-        int newIndex = (index + 1) % length;
-        setType(stack, getAvailableTypes(stack)[newIndex]);
-        return true;
-    }
-
-    @Override
-    public boolean decrementType(ItemStack stack) {
-        int length = getAvailableTypes(stack).length;
-        if (length == 0) return false;
-
-        NbtCompound nbt = stack.getOrCreateNbt();
-        int index = getIndexOfType(stack, nbt.getInt(TYPE));
-        int newIndex = (index + length - 1) % length;
-        setType(stack, getAvailableTypes(stack)[newIndex]);
-
-        return true;
     }
 
     @Override

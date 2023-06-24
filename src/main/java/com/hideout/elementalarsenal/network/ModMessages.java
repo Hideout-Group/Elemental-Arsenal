@@ -2,7 +2,6 @@ package com.hideout.elementalarsenal.network;
 
 import com.hideout.elementalarsenal.ElementalArsenal;
 import com.hideout.elementalarsenal.network.packet.ElementalItemSwitchC2SPacket;
-import com.hideout.elementalarsenal.network.packet.ElementalItemSyncMainHandS2CPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
@@ -16,6 +15,5 @@ public class ModMessages {
     }
 
     public static void registerS2CPackets() {
-        ClientPlayNetworking.registerGlobalReceiver(ELEMENTAL_ITEM_SYNC, ElementalItemSyncMainHandS2CPacket::receive);
     }
 }

@@ -12,25 +12,39 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.ActionResult;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 public class MouseScrollHandler {
     public static void registerScrollHandlers() {
-        MouseScrollCallback.EVENT.register((direction, ci) -> {
-            ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            if (player != null) {
-                ItemStack stack = player.getMainHandStack();
-                if (stack.getItem() instanceof IMultiElementItem item && player.isSneaking()) {
-                    PacketByteBuf buf = PacketByteBufs.create();
-                    buf.writeItemStack(stack);
-                    buf.writeInt(-direction); // Invert direction to make it more intuitive
-                    ClientPlayNetworking.send(ModMessages.ELEMENTAL_ITEM_SWITCH, buf);
+        MouseScrollCallback.EVENT.register(MouseScrollHandler::switchElementalType);
+    }
 
-                    return item.getAvailableTypes(stack).length > 1 ? ActionResult.CONSUME : ActionResult.PASS;
+    private static ActionResult switchElementalType(int direction, CallbackInfo callbackInfo) {
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player != null) {
+            ItemStack stack = player.getMainHandStack();
+            if (stack.getItem() instanceof IMultiElementItem item && player.isSneaking()) {
+
+                System.out.println("Sending switch packet");
+                boolean valid;
+                if (direction > 0) {
+                    valid = item.incrementType(stack);
+                } else {
+                    valid = item.decrementType(stack);
                 }
-            }
+                System.out.println("Client: " + item.getType(stack).toString());
 
-            return ActionResult.PASS;
-        });
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeNbt(stack.getNbt());
+                buf.writeInt(player.getInventory().selectedSlot);
+                ClientPlayNetworking.send(ModMessages.ELEMENTAL_ITEM_SWITCH, buf);
+
+
+                return valid ? ActionResult.CONSUME : ActionResult.PASS;
+            }
+        }
+
+        return ActionResult.PASS;
     }
 }

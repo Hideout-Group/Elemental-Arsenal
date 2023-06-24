@@ -1,11 +1,9 @@
 package com.hideout.elementalarsenal.network.packet;
 
-import com.hideout.elementalarsenal.item.custom.interfaces.IMultiElementItem;
-import com.hideout.elementalarsenal.network.ModMessages;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import com.hideout.elementalarsenal.item.custom.interfaces.IElementalItem;
+import com.hideout.elementalarsenal.util.ElementalType;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -15,18 +13,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class ElementalItemSwitchC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        ItemStack stack = buf.readItemStack();
-        int direction = buf.readInt();
+        NbtCompound nbt = buf.readNbt();
+        int slot = buf.readInt();
+        System.out.println("Packet called from " + player.getName().getString());
 
-        if (stack.getItem() instanceof IMultiElementItem item) {
-            boolean valid = direction > 0 ? item.incrementType(stack) : item.decrementType(stack);
-            PacketByteBuf newBuf = PacketByteBufs.create();
-            newBuf.writeNbt(stack.getNbt());
-
-            if (valid) {
-                ServerPlayNetworking.send(player, ModMessages.ELEMENTAL_ITEM_SYNC, newBuf);
-            }
-        }
+        player.getInventory().getStack(slot).setNbt(nbt);
+        System.out.println("Server: " + ElementalType.fromId(player.getInventory().getStack(slot)
+                .getOrCreateNbt().getInt(IElementalItem.TYPE)).toString());
     }
 
 }
