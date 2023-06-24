@@ -3,6 +3,8 @@ package com.hideout.elementalarsenal.util;
 import com.hideout.elementalarsenal.effect.ModStatusEffects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 
 public class ElementalOnHitEffects {
     public static void performOnHitEffect(ElementalType type, LivingEntity target, LivingEntity attacker) {
@@ -24,7 +26,11 @@ public class ElementalOnHitEffects {
 
     }
     private static void water(LivingEntity target, LivingEntity attacker) {
-
+        attacker.heal(2);
+        if (attacker.getWorld().isClient) {
+            attacker.getWorld().playSound(null, attacker.getBlockPos(),
+                    SoundEvents.BLOCK_BUBBLE_COLUMN_BUBBLE_POP, SoundCategory.PLAYERS);
+        }
     }
     private static void fire(LivingEntity target, LivingEntity attacker) {
 
