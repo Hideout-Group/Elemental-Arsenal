@@ -11,8 +11,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class ElementalItemSwitchC2SPacket {
     public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
-        int slot = buf.readInt();
         NbtCompound nbt = buf.readNbt();
+        int slot = buf.readInt();
 
         player.getInventory().getStack(slot).setNbt(nbt);
     }

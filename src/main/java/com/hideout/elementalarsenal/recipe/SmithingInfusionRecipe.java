@@ -145,11 +145,12 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
 
         @Override
         public void write(PacketByteBuf buf, SmithingInfusionRecipe recipe) {
-            recipe.base.write(buf);
-            recipe.addition.write(buf);
-
             buf.writeString(recipe.baseNBTKey);
             buf.writeString(recipe.additionNBTKey);
+
+            recipe.template.write(buf);
+            recipe.base.write(buf);
+            recipe.addition.write(buf);
 
             buf.writeItemStack(recipe.result);
         }
