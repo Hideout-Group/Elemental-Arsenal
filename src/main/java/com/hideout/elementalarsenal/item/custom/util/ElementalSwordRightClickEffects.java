@@ -62,6 +62,8 @@ public class ElementalSwordRightClickEffects {
             entities.forEach(entity -> {
                 if (player.canSee(entity)) {
                     entity.addVelocity(rotVec.multiply(2));
+                    if (entity instanceof PlayerEntity playerEntity)
+                        playerEntity.velocityModified = true;
                 }
             });
 
