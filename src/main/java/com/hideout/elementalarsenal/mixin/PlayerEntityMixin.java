@@ -44,7 +44,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         if (stack.getItem() instanceof ElementalItem item) {
             switch (item.getType(stack)) {
                 case LIGHTNING -> {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 1, 2));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 5, 2, false, false));
                 }
             }
         }
