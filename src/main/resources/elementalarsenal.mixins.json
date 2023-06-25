@@ -3,7 +3,6 @@
   "package": "com.hideout.elementalarsenal.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ExampleMixin",
     "ItemEntityMixin",
     "PlayerEntityMixin"
   ],
@@ -13,6 +12,7 @@
   "client": [
     "InGameHudAccessor",
     "InGameHudMixin",
-    "MouseMixin"
+    "MouseMixin",
+    "ExampleMixin"
   ]
 }

@@ -89,7 +89,7 @@ public class ElementalSwordRightClickEffects {
         }
 
         world.playSoundFromEntity(null, player, SoundEvents.BLOCK_POWDER_SNOW_STEP,
-                SoundCategory.PLAYERS, 1f, 2f);
+                SoundCategory.PLAYERS, 1f, 1.5f);
 
         return cooldown;
     }

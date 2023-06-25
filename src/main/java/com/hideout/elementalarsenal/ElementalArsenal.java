@@ -4,6 +4,7 @@ import com.hideout.elementalarsenal.effect.ModStatusEffects;
 import com.hideout.elementalarsenal.item.ModItemGroups;
 import com.hideout.elementalarsenal.item.ModItems;
 import com.hideout.elementalarsenal.network.ModMessages;
+import com.hideout.elementalarsenal.particle.ModParticles;
 import com.hideout.elementalarsenal.recipe.ModRecipes;
 import com.hideout.elementalarsenal.registry.ModRegistries;
 import com.hideout.elementalarsenal.sound.ModSounds;
@@ -27,6 +28,8 @@ public class ElementalArsenal implements ModInitializer {
 
 		ModItems.registerItems();
 		ModItemGroups.registerItemGroups(); // RUN AFTER ITEMS
+
+		ModParticles.registerParticles();
 
 		ModRegistries.registerRegistries();
 		ModRecipes.registerRecipes();
