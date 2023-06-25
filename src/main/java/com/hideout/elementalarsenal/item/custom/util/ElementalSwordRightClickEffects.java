@@ -1,5 +1,6 @@
 package com.hideout.elementalarsenal.item.custom.util;
 
+import com.hideout.elementalarsenal.sound.ModSounds;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.entity.Entity;
@@ -87,8 +88,8 @@ public class ElementalSwordRightClickEffects {
             cooldown = player.isOnGround() ? DEFAULT_COOLDOWN / 2 : DEFAULT_COOLDOWN;
         }
 
-        world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_POWDER_SNOW_STEP,
-                SoundCategory.PLAYERS, 1f, 1.5f);
+        world.playSoundFromEntity(null, player, SoundEvents.BLOCK_POWDER_SNOW_STEP,
+                SoundCategory.PLAYERS, 1f, 2f);
 
         return cooldown;
     }

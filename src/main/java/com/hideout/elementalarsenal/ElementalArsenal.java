@@ -6,6 +6,7 @@ import com.hideout.elementalarsenal.item.ModItems;
 import com.hideout.elementalarsenal.network.ModMessages;
 import com.hideout.elementalarsenal.recipe.ModRecipes;
 import com.hideout.elementalarsenal.registry.ModRegistries;
+import com.hideout.elementalarsenal.sound.ModSounds;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ public class ElementalArsenal implements ModInitializer {
 		ModRecipes.registerRecipes();
 
 		ModStatusEffects.registerStatusEffects();
+		ModSounds.registerSoundEvents();
 
 		ModMessages.registerC2SPackets();
 		LOGGER.info("Hello Fabric world!");

@@ -28,10 +28,11 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     }
     @Inject(method = "isInvulnerableTo", at = @At("HEAD"), cancellable = true)
     public void checkForAirItem(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-        if (!damageSource.isOf(DamageTypes.FALL) && !damageSource.isOf(DamageTypes.FLY_INTO_WALL)) return;
         if (getStackInHand(Hand.MAIN_HAND).getItem() instanceof ElementalItem item) {
-            if (item.getType(getStackInHand(Hand.MAIN_HAND)) == ElementalType.AIR) {
-                cir.setReturnValue(true);
+            if (damageSource.isOf(DamageTypes.FALL) || damageSource.isOf(DamageTypes.FLY_INTO_WALL)) {
+                if (item.getType(getStackInHand(Hand.MAIN_HAND)) == ElementalType.AIR) {
+                    cir.setReturnValue(true);
+                }
             }
         }
     }
@@ -44,7 +45,17 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         if (stack.getItem() instanceof ElementalItem item) {
             switch (item.getType(stack)) {
                 case LIGHTNING -> {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 5, 2, false, false));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 3, 2, false, false));
+                }
+                case FIRE -> {
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 3, 0, false, false));
+                }
+                case WATER -> {
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 3, 0, false, false));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 3, 0, false, false));
+                }
+                case EARTH -> {
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 3, 0, false, false));
                 }
             }
         }
