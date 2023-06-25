@@ -3,6 +3,8 @@ package com.hideout.elementalarsenal.item.custom.util;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
@@ -11,9 +13,12 @@ import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -99,7 +104,16 @@ public class ElementalSwordRightClickEffects {
         return DEFAULT_COOLDOWN;
     }
     private static int lightning(World world, PlayerEntity player) {
-        return DEFAULT_COOLDOWN;
+        Vec3d eyePos = player.getEyePos();
+        Vec3d endPos = eyePos.add(player.getRotationVector().multiply(10));
+        BlockHitResult result = world.raycast(new RaycastContext(eyePos,endPos, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE,player));
+        if (result.getType() == HitResult.Type.BLOCK) {
+            LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,world);
+            lightning.setPosition(result.getPos());
+            world.spawnEntity(lightning);
+            return DEFAULT_COOLDOWN;
+        }
+        return 0;
     }
     private static int nature(World world, PlayerEntity player) {
         return DEFAULT_COOLDOWN;
