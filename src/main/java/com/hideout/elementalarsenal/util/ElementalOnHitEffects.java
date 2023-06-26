@@ -4,8 +4,14 @@ import com.hideout.elementalarsenal.effect.ModStatusEffects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ElementalOnHitEffects {
     public static void performOnHitEffect(ElementalType type, LivingEntity target, LivingEntity attacker) {
@@ -32,9 +38,11 @@ public class ElementalOnHitEffects {
             attacker.getWorld().playSound(null, attacker.getBlockPos(),
                     SoundEvents.BLOCK_BUBBLE_COLUMN_BUBBLE_POP, SoundCategory.PLAYERS);
         }
+
+        target.setOnFire(false);
     }
     private static void fire(LivingEntity target, LivingEntity attacker) {
-        attacker.setOnFireFor(5);
+        target.setOnFireFor(5);
     }
     private static void lightning(LivingEntity target, LivingEntity attacker) {
         if (target.getWorld().getRandom().nextFloat() < 0.3) {
@@ -43,6 +51,13 @@ public class ElementalOnHitEffects {
     }
     private static void nature(LivingEntity target, LivingEntity attacker) {
 
+        World world = attacker.getWorld();
+        if (target instanceof PlayerEntity player) {
+            List<AnimalEntity> entities = world.getEntitiesByClass(AnimalEntity.class, new Box(target.getBlockPos()).expand(10), (entity) -> true);
+            entities.forEach((entity -> {
+                entity.setAttacking(player);
+            }));
+        }
     }
     private static void ice(LivingEntity target, LivingEntity attacker) {
         if (target.getWorld().getRandom().nextFloat() < 0.3) {
