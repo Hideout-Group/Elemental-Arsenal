@@ -1,6 +1,7 @@
 package com.hideout.elementalarsenal;
 
 import com.hideout.elementalarsenal.effect.ModStatusEffects;
+import com.hideout.elementalarsenal.event.ModEvents;
 import com.hideout.elementalarsenal.item.ModItemGroups;
 import com.hideout.elementalarsenal.item.ModItems;
 import com.hideout.elementalarsenal.network.ModMessages;
@@ -25,6 +26,7 @@ public class ElementalArsenal implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
+		ModEvents.registerEvents();
 
 		ModItems.registerItems();
 		ModItemGroups.registerItemGroups(); // RUN AFTER ITEMS

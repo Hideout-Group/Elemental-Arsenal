@@ -1,4 +1,5 @@
 accessWidener	v1  named
 
 accessible class net/minecraft/client/gui/hud/InGameHud$HeartType
+accessible method net/minecraft/entity/mob/MobEntity disablePlayerShield (Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)V
 accessible method net/minecraft/client/particle/SpellParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDDLnet/minecraft/client/particle/SpriteProvider;)V

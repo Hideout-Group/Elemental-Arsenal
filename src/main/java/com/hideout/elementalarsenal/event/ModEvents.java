@@ -6,5 +6,6 @@ public class ModEvents {
     }
 
     public static void registerEvents() {
+
     }
 }
