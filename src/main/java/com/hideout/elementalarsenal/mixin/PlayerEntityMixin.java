@@ -5,6 +5,7 @@ import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.damage.DamageTypes;
@@ -56,6 +57,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 }
                 case EARTH -> {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 3, 0, false, false));
+                }
+                case ICE -> {
+                    if (player.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) <
+                            player.getAttributeBaseValue(EntityAttributes.GENERIC_MOVEMENT_SPEED)) {
+//                        player.getAttributes().get
+                    }
                 }
             }
         }

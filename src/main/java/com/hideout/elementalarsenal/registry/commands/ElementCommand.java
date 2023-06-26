@@ -3,6 +3,7 @@ package com.hideout.elementalarsenal.registry.commands;
 import com.hideout.elementalarsenal.item.custom.interfaces.ElementalItem;
 import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
 import com.hideout.elementalarsenal.util.ElementalType;
+import com.mojang.brigadier.Message;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,8 @@ public class ElementCommand {
 
         if (player.getMainHandStack().getItem() instanceof MultiElementItem item) {
             ElementalType selectedType = ElementalType.fromString(type);
-            if (selectedType == null) throw new RuntimeException("No type with name: " + type);
+            if (selectedType == null) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+                    () -> "That type does not exist");
             item.addType(player.getMainHandStack(), selectedType);
 
             return 1;
@@ -39,15 +41,20 @@ public class ElementCommand {
 
         if (stack.getItem() instanceof MultiElementItem item) {
             ElementalType selectedType = ElementalType.fromString(type);
-            if (selectedType == null) throw new RuntimeException("No type with name: " + type);
-            if (item.getAvailableTypes(stack).length > 0) {
+            if (selectedType == null) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+                    () -> "That type does not exist");
+            if (item.getAvailableTypes(stack).length - 1 > 0) {
                 ArrayList<ElementalType> types = new ArrayList<>(Arrays.stream(item.getAvailableTypes(stack)).toList());
+                if (!types.contains(selectedType)) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+                        () -> "This item does not contain that type.");
+                item.setType(stack, item.getAvailableTypes(stack)[item.getIndexOfType(stack, selectedType) - 1]);
                 types.remove(selectedType);
                 stack.getOrCreateNbt().putIntArray(MultiElementItem.AVAILABLE_TYPES, types.stream().map(ElementalType::getId).toList());
                 return 1;
+            } else {
+                throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+                        () -> "An elemental item must have one type");
             }
-
-            return 0;
         }
 
         throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
@@ -60,8 +67,12 @@ public class ElementCommand {
 
         if (player.getMainHandStack().getItem() instanceof ElementalItem item) {
             ElementalType selectedType = ElementalType.fromString(type);
-            if (selectedType == null) throw new RuntimeException("No type with name: " + type);
+            if (selectedType == null) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+                    () -> "That type does not exist");
             item.setType(player.getMainHandStack(), selectedType);
+            if (item instanceof MultiElementItem multiElementItem) {
+                multiElementItem.updateTypes(player.getMainHandStack());
+            }
             return 1;
         }
 

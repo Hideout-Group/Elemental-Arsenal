@@ -3,6 +3,7 @@ package com.hideout.elementalarsenal.util;
 import com.hideout.elementalarsenal.effect.ModStatusEffects;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 
@@ -33,7 +34,7 @@ public class ElementalOnHitEffects {
         }
     }
     private static void fire(LivingEntity target, LivingEntity attacker) {
-
+        attacker.setOnFireFor(5);
     }
     private static void lightning(LivingEntity target, LivingEntity attacker) {
         if (target.getWorld().getRandom().nextFloat() < 0.3) {
@@ -44,6 +45,8 @@ public class ElementalOnHitEffects {
 
     }
     private static void ice(LivingEntity target, LivingEntity attacker) {
-
+        if (target.getWorld().getRandom().nextFloat() < 0.3) {
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 1));
+        }
     }
 }
