@@ -112,7 +112,7 @@ public class ElementalSwordRightClickEffects {
             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,world);
             lightning.setPosition(result.getPos());
             world.spawnEntity(lightning);
-            return DEFAULT_COOLDOWN;
+            return DEFAULT_COOLDOWN * 2;
         }
         return 0;
     }
