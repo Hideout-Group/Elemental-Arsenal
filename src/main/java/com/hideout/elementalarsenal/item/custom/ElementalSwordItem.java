@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
 import com.hideout.elementalarsenal.item.custom.util.ElementalSwordRightClickEffects;
+import com.hideout.elementalarsenal.item.custom.util.ModTooltipHelper;
 import com.hideout.elementalarsenal.util.ElementalOnHitEffects;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.client.gui.screen.Screen;
@@ -78,6 +79,11 @@ public class ElementalSwordItem extends SwordItem implements MultiElementItem {
         if (types.length > 0) {
             if (!Screen.hasShiftDown()) {
                 tooltip.add(Text.literal("Press SHIFT to view elements").formatted(Formatting.YELLOW));
+                tooltip.add(Text.literal("Press CTRL + SHIFT to view abilities").formatted(Formatting.AQUA));
+            } else if (Screen.hasControlDown()) {
+                ElementalType type = getType(stack);
+                ModTooltipHelper.Sword.getTooltipForType(type).forEach(text ->
+                        tooltip.add(text.setStyle(type.getStyle())));
             } else {
                 for (ElementalType type : types) {
                     tooltip.add(type.toFormattedText());

@@ -6,70 +6,58 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public enum ElementalType {
-    BLANK,
-    AIR,
-    EARTH,
-    WATER,
-    FIRE,
-    LIGHTNING,
-    NATURE,
-    ICE;
+    BLANK(0, "element.elementalarsenal.blank",
+            Style.EMPTY.withColor(0xDADADA)),
+    AIR(1, "element.elementalarsenal.air",
+            Style.EMPTY.withColor(0x50BF8A)),
+    EARTH(2, "element.elementalarsenal.earth",
+            Style.EMPTY.withColor(0xC29938)),
+    WATER(3, "element.elementalarsenal.water",
+            Style.EMPTY.withColor(0x1CC0C9)),
+    FIRE(4, "element.elementalarsenal.fire",
+            Style.EMPTY.withColor(0xD75D24)),
+    LIGHTNING(5, "element.elementalarsenal.lightning",
+            Style.EMPTY.withColor(0x6E3986)),
+    NATURE(6, "element.elementalarsenal.nature",
+            Style.EMPTY.withColor(0x1EA521)),
+    ICE(7, "element.elementalarsenal.ice",
+            Style.EMPTY.withColor(0xA0E9E5));
 
-    private final static HashMap<ElementalType, Wrapper> TYPES = new HashMap<>();
-
-    static {
-        TYPES.put(BLANK, new Wrapper(0, "element.elementalarsenal.blank",
-                Style.EMPTY.withColor(TextColor.parse("#DADADA"))));
-
-        TYPES.put(AIR, new Wrapper(1, "element.elementalarsenal.air",
-                Style.EMPTY.withColor(TextColor.parse("#50BF8A"))));
-
-        TYPES.put(EARTH, new Wrapper(2, "element.elementalarsenal.earth",
-                Style.EMPTY.withColor(TextColor.parse("#C29938"))));
-
-        TYPES.put(WATER, new Wrapper(3, "element.elementalarsenal.water",
-                Style.EMPTY.withColor(TextColor.parse("#1CC0C9"))));
-
-        TYPES.put(FIRE, new Wrapper(4, "element.elementalarsenal.fire",
-                Style.EMPTY.withColor(TextColor.parse("#D75D24"))));
-
-        TYPES.put(LIGHTNING, new Wrapper(5, "element.elementalarsenal.lightning",
-                Style.EMPTY.withColor(TextColor.parse("#6E3986"))));
-
-        TYPES.put(NATURE, new Wrapper(6, "element.elementalarsenal.nature",
-                Style.EMPTY.withColor(TextColor.parse("#1EA521"))));
-
-        TYPES.put(ICE, new Wrapper(7, "element.elementalarsenal.ice",
-                Style.EMPTY.withColor(TextColor.parse("#A0E9E5"))));
+    private final int ID;
+    private final String TRANSLATION_KEY;
+    private final Style STYLE;
+    ElementalType(int id, String translationKey, Style style) {
+        ID = id;
+        TRANSLATION_KEY = translationKey;
+        STYLE = style;
     }
 
     public static ElementalType fromId(int id) {
-        for (var entry:
-                TYPES.entrySet()) {
-            if (entry.getValue().ID == id) return entry.getKey();
+        for (ElementalType value : values()) {
+            if (value.getId() == id) return value;
         }
         return null;
     }
 
     public static ElementalType fromString(String str) {
-        for (var entry:
-                TYPES.entrySet()) {
-            if (Text.translatable(entry.getValue().TRANSLATION_KEY).getString().equalsIgnoreCase(str)) return entry.getKey();
+        for (ElementalType value : values()) {
+            if (Objects.equals(value.toString(), str)) return value;
         }
         return null;
     }
 
     public int getId() {
-        return TYPES.get(this).ID;
+        return ID;
     }
 
     public String getTranslationKey() {
-        return TYPES.get(this).TRANSLATION_KEY;
+        return TRANSLATION_KEY;
     }
     public Style getStyle() {
-        return TYPES.get(this).STYLE;
+        return STYLE;
     }
 
     public MutableText toFormattedText() {
@@ -77,18 +65,5 @@ public enum ElementalType {
     }
     public String toString() {
         return toFormattedText().getString();
-    }
-
-
-
-    private static class Wrapper {
-        public final int ID;
-        public final String TRANSLATION_KEY;
-        public final Style STYLE;
-        public Wrapper(int id, String translation_key, Style style) {
-            this.ID = id;
-            this.TRANSLATION_KEY = translation_key;
-            this.STYLE = style;
-        }
     }
 }

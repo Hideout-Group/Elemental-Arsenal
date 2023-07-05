@@ -15,6 +15,7 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BoneMealItem;
@@ -68,14 +69,13 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 3, 0, false, false));
                 }
                 case WATER -> {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 3, 0, false, false));
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 3, 0, false, false));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 3, 0, false, false));
                 }
                 case EARTH -> {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 3, 0, false, false));
                 }
                 case ICE -> {
-                    FrostWalkerEnchantment.freezeWater(player, player.getWorld(), player.getBlockPos(), 2);
+                    FrostWalkerEnchantment.freezeWater(player, player.getWorld(), player.getBlockPos(), 3);
                 }
                 case NATURE -> {
                     if (player.isSneaking()) {
