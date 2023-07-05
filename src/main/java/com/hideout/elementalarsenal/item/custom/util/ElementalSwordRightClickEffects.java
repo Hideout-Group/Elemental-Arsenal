@@ -2,15 +2,14 @@ package com.hideout.elementalarsenal.item.custom.util;
 
 import com.hideout.elementalarsenal.sound.ModSounds;
 import com.hideout.elementalarsenal.util.ElementalType;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.mob.DrownedEntity;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.passive.SalmonEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
@@ -103,33 +102,29 @@ public class ElementalSwordRightClickEffects {
     private static int water(World world, PlayerEntity player) {
         final int MAX_AMOUNT_OF_MOBS = 10;
         final int RAIN_HEIGHT = 10;
-        final EntityType<?>[] POSSIBLE_MOBS = {EntityType.DROWNED,EntityType.GUARDIAN,EntityType.SALMON};
         for (int i = 0; i < MAX_AMOUNT_OF_MOBS; i++) {
-            final int CHOSEN_MOB_INDEX = player.getWorld().random.nextInt(POSSIBLE_MOBS.length);
+            final int CHOSEN_MOB_INDEX = player.getWorld().random.nextInt(3);
             switch (CHOSEN_MOB_INDEX) {
-                case 0: {
-                    DrownedEntity drowned = new DrownedEntity(EntityType.DROWNED,world);
-                    drowned.setPosition(player.getPos().add(0,RAIN_HEIGHT,0).addRandom(world.random,3));
+                case 0 -> {
+                    DrownedEntity drowned = new DrownedEntity(EntityType.DROWNED, world);
+                    drowned.setPosition(player.getPos().add(0, RAIN_HEIGHT, 0).addRandom(world.random, 3));
+                    drowned.equipStack(EquipmentSlot.HEAD, new ItemStack(Blocks.GLASS));
                     world.spawnEntity(drowned);
-                    break;
                 }
-                case 1: {
-                    GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN,world);
-                    guardian.setPosition(player.getPos().add(0,RAIN_HEIGHT,0).addRandom(world.random,3));
+                case 1 -> {
+                    GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN, world);
+                    guardian.setPosition(player.getPos().add(0, RAIN_HEIGHT, 0).addRandom(world.random, 3));
                     world.spawnEntity(guardian);
-                    break;
                 }
-                case 2: {
-                    SalmonEntity salmon = new SalmonEntity(EntityType.SALMON,world);
-                    salmon.setPosition(player.getPos().add(0,RAIN_HEIGHT,0).addRandom(world.random,3));
+                case 2 -> {
+                    SalmonEntity salmon = new SalmonEntity(EntityType.SALMON, world);
+                    salmon.setPosition(player.getPos().add(0, RAIN_HEIGHT, 0).addRandom(world.random, 3));
                     world.spawnEntity(salmon);
-                    break;
                 }
-
             }
         }
 
-        return DEFAULT_COOLDOWN;
+        return DEFAULT_COOLDOWN * 3;
     }
     private static int fire(World world, PlayerEntity player) {
         return DEFAULT_COOLDOWN;
