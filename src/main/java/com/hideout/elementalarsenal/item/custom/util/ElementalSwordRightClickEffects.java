@@ -10,6 +10,7 @@ import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.passive.SalmonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
@@ -107,17 +108,26 @@ public class ElementalSwordRightClickEffects {
             switch (CHOSEN_MOB_INDEX) {
                 case 0 -> {
                     DrownedEntity drowned = new DrownedEntity(EntityType.DROWNED, world);
+                    NbtCompound nbt = drowned.writeNbt(new NbtCompound());
+                    nbt.putString("DeathLootTable", "minecraft:empty");
+                    drowned.readNbt(nbt);
                     drowned.setPosition(player.getPos().add(0, RAIN_HEIGHT, 0).addRandom(world.random, 3));
                     drowned.equipStack(EquipmentSlot.HEAD, new ItemStack(Blocks.GLASS));
                     world.spawnEntity(drowned);
                 }
                 case 1 -> {
                     GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN, world);
+                    NbtCompound nbt = guardian.writeNbt(new NbtCompound());
+                    nbt.putString("DeathLootTable", "minecraft:empty");
+                    guardian.readNbt(nbt);
                     guardian.setPosition(player.getPos().add(0, RAIN_HEIGHT, 0).addRandom(world.random, 3));
                     world.spawnEntity(guardian);
                 }
                 case 2 -> {
                     SalmonEntity salmon = new SalmonEntity(EntityType.SALMON, world);
+                    NbtCompound nbt = salmon.writeNbt(new NbtCompound());
+                    nbt.putString("DeathLootTable", "minecraft:empty");
+                    salmon.readNbt(nbt);
                     salmon.setPosition(player.getPos().add(0, RAIN_HEIGHT, 0).addRandom(world.random, 3));
                     world.spawnEntity(salmon);
                 }
