@@ -7,6 +7,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.DrownedEntity;
+import net.minecraft.entity.mob.GuardianEntity;
+import net.minecraft.entity.passive.SalmonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleEffect;
@@ -98,6 +101,33 @@ public class ElementalSwordRightClickEffects {
         return DEFAULT_COOLDOWN;
     }
     private static int water(World world, PlayerEntity player) {
+        final int MAX_AMOUNT_OF_MOBS = 10;
+        final int RAIN_HEIGHT = 10;
+        final EntityType<?>[] POSSIBLE_MOBS = {EntityType.DROWNED,EntityType.GUARDIAN,EntityType.SALMON};
+        for (int i = 0; i < MAX_AMOUNT_OF_MOBS; i++) {
+            final int CHOSEN_MOB_INDEX = player.getWorld().random.nextInt(POSSIBLE_MOBS.length);
+            switch (CHOSEN_MOB_INDEX) {
+                case 0: {
+                    DrownedEntity drowned = new DrownedEntity(EntityType.DROWNED,world);
+                    drowned.setPosition(player.getPos().add(0,RAIN_HEIGHT,0).addRandom(world.random,3));
+                    world.spawnEntity(drowned);
+                    break;
+                }
+                case 1: {
+                    GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN,world);
+                    guardian.setPosition(player.getPos().add(0,RAIN_HEIGHT,0).addRandom(world.random,3));
+                    world.spawnEntity(guardian);
+                    break;
+                }
+                case 2: {
+                    SalmonEntity salmon = new SalmonEntity(EntityType.SALMON,world);
+                    salmon.setPosition(player.getPos().add(0,RAIN_HEIGHT,0).addRandom(world.random,3));
+                    world.spawnEntity(salmon);
+                    break;
+                }
+
+            }
+        }
 
         return DEFAULT_COOLDOWN;
     }
@@ -112,7 +142,7 @@ public class ElementalSwordRightClickEffects {
             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,world);
             lightning.setPosition(result.getPos());
             world.spawnEntity(lightning);
-            return DEFAULT_COOLDOWN;
+            return DEFAULT_COOLDOWN * 2;
         }
         return 0;
     }
