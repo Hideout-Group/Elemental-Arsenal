@@ -1,4 +1,4 @@
-package com.hideout.elementalarsenal.registry.commands.suggestion;
+package com.hideout.elementalarsenal.registry.suggestion;
 
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.server.command.ServerCommandSource;

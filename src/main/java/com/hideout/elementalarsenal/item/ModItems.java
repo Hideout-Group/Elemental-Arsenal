@@ -11,18 +11,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
 public class ModItems {
-
-    // Multi-Element Items
     public static final Item ELEMENTAL_SWORD = registerItem("elemental_sword",
             new ElementalSwordItem(ElementalToolMaterial.INSTANCE, 3, -2.4f,
                     new FabricItemSettings().fireproof()));
 
-    // Elemental Items
     public static final Item ELEMENTAL_GEM = registerItem("elemental_gem",
             new ElementalGemItem(new FabricItemSettings().fireproof().maxCount(1)));
 
-
-    // Crafting Materials
     public static final Item SCORCHED_IRON = registerItem("scorched_iron",
             new Item(new FabricItemSettings().fireproof()));
 

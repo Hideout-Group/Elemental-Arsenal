@@ -7,8 +7,6 @@ import net.minecraft.entity.mob.MobEntity;
 
 import java.util.EnumSet;
 
-// Basically the attack goal. A little different, though.
-// First added to an entity's GoalSelector through the Nature Sword's onHitEffect. Target is changed from then on.
 public class AttackUntilDefeatedGoal extends Goal {
     private final MobEntity mob;
     private LivingEntity target;
@@ -51,7 +49,7 @@ public class AttackUntilDefeatedGoal extends Goal {
         this.mob.getLookControl().lookAt(this.target, 30.0F, 30.0F);
         double d = (this.mob.getWidth() * 2.0F * this.mob.getWidth() * 2.0F);
         double e = this.mob.squaredDistanceTo(this.target.getX(), this.target.getY(), this.target.getZ());
-        double f = 1.4;
+        double f = 1.33;
 
         this.mob.getNavigation().startMovingTo(this.target, f);
         this.cooldown = Math.max(this.cooldown - 1, 0);

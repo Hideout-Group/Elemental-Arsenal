@@ -23,7 +23,6 @@ public abstract class MobEntityMixin extends LivingEntity {
 
 
     // THIS IS SO UGLY LORD SAVE ME :pray:
-    // This needs to be used otherwise a crash is caused. It's terrible for compatability.
     @Inject(method = "tryAttack", at = @At("HEAD"), cancellable = true)
     public void modifyAttackDamage(Entity target, CallbackInfoReturnable<Boolean> cir) {
         MobEntity mobEntity = (MobEntity) (Object) this;

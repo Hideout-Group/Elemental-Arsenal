@@ -19,10 +19,13 @@ public class ElementCommand {
     public static int add(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayerOrThrow();
-        ElementalType type = context.getArgument("type", ElementalType.class);
+        String type = context.getArgument("type", String.class);
 
         if (player.getMainHandStack().getItem() instanceof MultiElementItem item) {
-            item.addType(player.getMainHandStack(), type);
+            ElementalType selectedType = ElementalType.fromString(type);
+            if (selectedType == null) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+                    () -> "That type does not exist");
+            item.addType(player.getMainHandStack(), selectedType);
 
             return 1;
         }
@@ -33,16 +36,19 @@ public class ElementCommand {
     public static int remove(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayerOrThrow();
-        ElementalType type = context.getArgument("type", ElementalType.class);
+        String type = context.getArgument("type", String.class);
         ItemStack stack = player.getMainHandStack();
 
         if (stack.getItem() instanceof MultiElementItem item) {
+            ElementalType selectedType = ElementalType.fromString(type);
+            if (selectedType == null) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+                    () -> "That type does not exist");
             if (item.getAvailableTypes(stack).length - 1 > 0) {
                 ArrayList<ElementalType> types = new ArrayList<>(Arrays.stream(item.getAvailableTypes(stack)).toList());
-                if (!types.contains(type)) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+                if (!types.contains(selectedType)) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
                         () -> "This item does not contain that type.");
-                item.setType(stack, item.getAvailableTypes(stack)[item.getIndexOfType(stack, type) - 1]);
-                types.remove(type);
+                item.setType(stack, item.getAvailableTypes(stack)[item.getIndexOfType(stack, selectedType) - 1]);
+                types.remove(selectedType);
                 stack.getOrCreateNbt().putIntArray(MultiElementItem.AVAILABLE_TYPES, types.stream().map(ElementalType::getId).toList());
                 return 1;
             } else {
@@ -57,10 +63,13 @@ public class ElementCommand {
     public static int set(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayerOrThrow();
-        ElementalType type = context.getArgument("type", ElementalType.class);
+        String type = context.getArgument("type", String.class);
 
         if (player.getMainHandStack().getItem() instanceof ElementalItem item) {
-            item.setType(player.getMainHandStack(), type);
+            ElementalType selectedType = ElementalType.fromString(type);
+            if (selectedType == null) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+                    () -> "That type does not exist");
+            item.setType(player.getMainHandStack(), selectedType);
             if (item instanceof MultiElementItem multiElementItem) {
                 multiElementItem.updateTypes(player.getMainHandStack());
             }

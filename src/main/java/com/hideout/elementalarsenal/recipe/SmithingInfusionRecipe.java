@@ -30,15 +30,17 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
     private final Ingredient template;
     private final Ingredient base;
     private final Ingredient addition;
+    private final ItemStack result;
     private final String baseNBTKey; // Key for the NBT on the base item to be written to
     private final String additionNBTKey; // Key for the NBT on the addition item to be read from
 
 
-    public SmithingInfusionRecipe(Identifier id, Ingredient template, Ingredient base, Ingredient addition, String baseNBTKey, String additionNBTKey) {
+    public SmithingInfusionRecipe(Identifier id, Ingredient template, Ingredient base, Ingredient addition, ItemStack result, String baseNBTKey, String additionNBTKey) {
         this.id = id;
         this.template = template;
         this.base = base;
         this.addition = addition;
+        this.result = result;
         this.baseNBTKey = baseNBTKey;
         this.additionNBTKey = additionNBTKey;
     }
@@ -92,7 +94,7 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
 
     @Override
     public ItemStack getOutput(DynamicRegistryManager registryManager) {
-        return null;
+        return result;
     }
 
     @Override
@@ -123,7 +125,9 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
             Ingredient base = Ingredient.fromJson(baseElement);
             Ingredient addition = Ingredient.fromJson(additionElement);
 
-            return new SmithingInfusionRecipe(id, template, base, addition, baseNBTKey, additionNBTKey);
+            ItemStack result = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "result"));
+
+            return new SmithingInfusionRecipe(id, template, base, addition, result, baseNBTKey, additionNBTKey);
         }
 
         @Override
@@ -135,7 +139,9 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
             Ingredient base = Ingredient.fromPacket(buf);
             Ingredient addition = Ingredient.fromPacket(buf);
 
-            return new SmithingInfusionRecipe(id, template, base, addition, baseNBTKey, additionNBTKey);
+            ItemStack result = buf.readItemStack();
+
+            return new SmithingInfusionRecipe(id, template, base, addition, result, baseNBTKey, additionNBTKey);
         }
 
         @Override
@@ -146,6 +152,8 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
             recipe.template.write(buf);
             recipe.base.write(buf);
             recipe.addition.write(buf);
+
+            buf.writeItemStack(recipe.result);
         }
     }
 }
