@@ -1,10 +1,12 @@
 package com.hideout.elementalarsenal.item.custom.util;
 
+import com.hideout.elementalarsenal.effect.ModStatusEffects;
 import com.hideout.elementalarsenal.sound.ModSounds;
 import com.hideout.elementalarsenal.util.ElementalType;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.entity.*;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.DrownedEntity;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.passive.SalmonEntity;
@@ -44,7 +46,7 @@ public class ElementalSwordRightClickEffects {
     }
 
     private static int air(World world, PlayerEntity player) {
-        int cooldown = 0;
+        int cooldown;
         if (player.isSneaking()) {
             Vec3d rotVec = player.getRotationVector();
             Box box = new Box(player.getBlockPos()).expand(3);
@@ -147,6 +149,8 @@ public class ElementalSwordRightClickEffects {
             LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT,world);
             lightning.setPosition(result.getPos());
             world.spawnEntity(lightning);
+
+            player.addStatusEffect(new StatusEffectInstance(ModStatusEffects.RENDER_LARGE, 10, 1, false, false));
             return DEFAULT_COOLDOWN * 2;
         }
         return 0;

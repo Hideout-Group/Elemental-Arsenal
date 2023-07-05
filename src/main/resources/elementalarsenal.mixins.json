@@ -15,6 +15,7 @@
     "ExampleMixin",
     "InGameHudAccessor",
     "InGameHudMixin",
+    "LivingEntityRendererMixin",
     "MouseMixin"
   ]
 }

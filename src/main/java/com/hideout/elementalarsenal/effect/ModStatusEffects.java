@@ -14,6 +14,8 @@ import java.util.List;
 public class ModStatusEffects {
     private static final ArrayList<StatusEffect> EFFECTS = new ArrayList<>();
     public static StatusEffect ELECTRIFIED = registerEffect("electrified", new ElectrifiedStatusEffect());
+    public static StatusEffect RENDER_LARGE = registerEffect("render_large", new RenderLargeStatusEffect());
+
     public static void registerStatusEffects() {
 
     }
