@@ -52,12 +52,13 @@ public class ElementalOnHitEffects {
 
         target.setOnFire(false);
     }
+
     private static void fire(LivingEntity target, LivingEntity attacker) {
         target.setOnFireFor(5);
     }
     private static void lightning(LivingEntity target, LivingEntity attacker) {
-        if (target.getWorld().getRandom().nextFloat() < 0.3) {
-            target.addStatusEffect(new StatusEffectInstance(ModStatusEffects.ELECTRIFIED, 60, 1));
+        if (target.getWorld().getRandom().nextFloat() < 0.3f) {
+            target.addStatusEffect(new StatusEffectInstance(ModStatusEffects.ELECTRIFIED, 100, 1));
         }
     }
     private static void nature(LivingEntity target, LivingEntity attacker) {
@@ -88,8 +89,8 @@ public class ElementalOnHitEffects {
         }));
     }
     private static void ice(LivingEntity target, LivingEntity attacker) {
-        if (target.getWorld().getRandom().nextFloat() < 0.3) {
-            target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 1));
+        if (target.getWorld().getRandom().nextFloat() < 0.3f) {
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 2));
         }
     }
 }
