@@ -6,6 +6,9 @@ import net.minecraft.text.Text;
 
 import java.util.List;
 
+/**
+ * Helper class for getting the tooltips for each individual MultiElementItem. Not ideal.
+ */
 public class ModTooltipHelper {
 
 

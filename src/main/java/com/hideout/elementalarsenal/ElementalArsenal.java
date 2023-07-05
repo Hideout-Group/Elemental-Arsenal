@@ -8,6 +8,7 @@ import com.hideout.elementalarsenal.network.ModMessages;
 import com.hideout.elementalarsenal.particle.ModParticles;
 import com.hideout.elementalarsenal.recipe.ModRecipes;
 import com.hideout.elementalarsenal.registry.ModRegistries;
+import com.hideout.elementalarsenal.registry.commands.argument.ModArguments;
 import com.hideout.elementalarsenal.sound.ModSounds;
 import net.fabricmc.api.ModInitializer;
 

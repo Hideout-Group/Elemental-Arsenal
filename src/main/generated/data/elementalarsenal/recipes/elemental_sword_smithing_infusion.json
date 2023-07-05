@@ -1,0 +1,14 @@
+{
+  "type": "elementalarsenal:smithing_infusion",
+  "addition": {
+    "item": "elementalarsenal:elemental_gem",
+    "key": "type"
+  },
+  "base": {
+    "item": "elementalarsenal:elemental_sword",
+    "key": "type"
+  },
+  "template": {
+    "item": "elementalarsenal:elemental_infusion_template"
+  }
+}

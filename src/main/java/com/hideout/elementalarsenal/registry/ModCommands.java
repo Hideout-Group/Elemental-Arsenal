@@ -2,7 +2,8 @@ package com.hideout.elementalarsenal.registry;
 
 import com.hideout.elementalarsenal.registry.commands.ElementCommand;
 import com.hideout.elementalarsenal.registry.commands.ModGiveCommand;
-import com.hideout.elementalarsenal.registry.suggestion.ModSuggestionProviders;
+import com.hideout.elementalarsenal.registry.commands.argument.ElementalArgumentType;
+import com.hideout.elementalarsenal.registry.commands.suggestion.ModSuggestionProviders;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -43,21 +44,21 @@ public class ModCommands {
 
             final LiteralCommandNode<ServerCommandSource> ELEMENT_SET =
                     literal("set")
-                            .then(argument("type", StringArgumentType.word())
+                            .then(argument("type", ElementalArgumentType.type())
                                     .suggests(ModSuggestionProviders.ELEMENTAL_TYPE)
                             .executes(ElementCommand::set))
                             .build();
 
             final LiteralCommandNode<ServerCommandSource> ELEMENT_ADD =
                     literal("add")
-                            .then(argument("type", StringArgumentType.word())
+                            .then(argument("type", ElementalArgumentType.type())
                                     .suggests(ModSuggestionProviders.ELEMENTAL_TYPE)
                             .executes(ElementCommand::add))
                             .build();
 
             final LiteralCommandNode<ServerCommandSource> ELEMENT_REMOVE =
                     literal("remove")
-                            .then(argument("type", StringArgumentType.word())
+                            .then(argument("type", ElementalArgumentType.type())
                                     .suggests(ModSuggestionProviders.ELEMENTAL_TYPE)
                             .executes(ElementCommand::remove))
                             .build();
