@@ -3,7 +3,7 @@ package com.hideout.elementalarsenal.registry.commands;
 import com.hideout.elementalarsenal.item.custom.interfaces.ElementalItem;
 import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
 import com.hideout.elementalarsenal.util.ElementalType;
-import com.mojang.brigadier.Message;
+import com.hideout.elementalarsenal.util.ElementalUtils;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,7 @@ public class ElementCommand {
             ElementalType selectedType = ElementalType.fromString(type);
             if (selectedType == null) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
                     () -> "That type does not exist");
-            item.addType(player.getMainHandStack(), selectedType);
+            ElementalUtils.addType(player.getMainHandStack(), selectedType);
 
             return 1;
         }
@@ -43,13 +43,15 @@ public class ElementCommand {
             ElementalType selectedType = ElementalType.fromString(type);
             if (selectedType == null) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
                     () -> "That type does not exist");
-            if (item.getAvailableTypes(stack).length - 1 > 0) {
-                ArrayList<ElementalType> types = new ArrayList<>(Arrays.stream(item.getAvailableTypes(stack)).toList());
+
+            if (ElementalUtils.getAvailableTypes(stack).length - 1 > 0) {
+                ArrayList<ElementalType> types = new ArrayList<>(Arrays.stream(ElementalUtils.getAvailableTypes(stack)).toList());
                 if (!types.contains(selectedType)) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
                         () -> "This item does not contain that type.");
-                item.setType(stack, item.getAvailableTypes(stack)[item.getIndexOfType(stack, selectedType) - 1]);
+
+                ElementalUtils.setType(stack, ElementalUtils.getAvailableTypes(stack)[ElementalUtils.getIndexOfType(stack, selectedType) - 1]);
                 types.remove(selectedType);
-                stack.getOrCreateNbt().putIntArray(MultiElementItem.AVAILABLE_TYPES, types.stream().map(ElementalType::getId).toList());
+                ElementalUtils.setAvailableTypes(stack, types);
                 return 1;
             } else {
                 throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
@@ -69,9 +71,9 @@ public class ElementCommand {
             ElementalType selectedType = ElementalType.fromString(type);
             if (selectedType == null) throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
                     () -> "That type does not exist");
-            item.setType(player.getMainHandStack(), selectedType);
+            ElementalUtils.setType(player.getMainHandStack(), selectedType);
             if (item instanceof MultiElementItem multiElementItem) {
-                multiElementItem.updateTypes(player.getMainHandStack());
+                ElementalUtils.updateTypes(player.getMainHandStack());
             }
             return 1;
         }
@@ -87,7 +89,7 @@ public class ElementCommand {
 
         if (stack.getItem() instanceof MultiElementItem item) {
             MutableText msg = Text.literal("");
-            ElementalType[] types = item.getAvailableTypes(stack);
+            ElementalType[] types = ElementalUtils.getAvailableTypes(stack);
 
             for (int i = 0; i < types.length; i++) {
                 ElementalType type = types[i];
@@ -97,8 +99,10 @@ public class ElementCommand {
                     msg.append(type.toFormattedText().append(", "));
                 }
             }
-            if (msg.getString().length() > 0)
+
+            if (!msg.getString().isEmpty())
                 source.sendFeedback(() -> msg, false);
+
             return 1;
         }
 

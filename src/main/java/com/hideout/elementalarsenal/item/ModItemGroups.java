@@ -21,6 +21,7 @@ public class ModItemGroups {
                         .entries((displayContext, entries) ->
                         {
                             entries.add(ModItems.ELEMENTAL_SWORD);
+                            entries.add(ModItems.ELEMENTAL_TRIDENT);
                             entries.add(ModItems.ELEMENTAL_GEM);
                             entries.add(ModItems.ELEMENTAL_INFUSION_TEMPLATE);
                             entries.add(ModItems.SCORCHED_IRON);
@@ -35,6 +36,7 @@ public class ModItemGroups {
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
             entries.add(ModItems.ELEMENTAL_SWORD);
+            entries.add(ModItems.ELEMENTAL_TRIDENT);
         });
     }
 }

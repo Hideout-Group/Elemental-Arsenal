@@ -1,0 +1,7 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "elementalarsenal:item/elemental_trident",
+    "layer1": "elementalarsenal:item/elemental_trident_overlay"
+  }
+}

@@ -4,6 +4,7 @@ import com.hideout.elementalarsenal.ElementalArsenal;
 import com.hideout.elementalarsenal.item.ModItems;
 import com.hideout.elementalarsenal.item.custom.interfaces.ElementalItem;
 import com.hideout.elementalarsenal.util.ElementalType;
+import com.hideout.elementalarsenal.util.ElementalUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -41,7 +42,7 @@ public abstract class ItemEntityMixin extends Entity {
         if (entity.getStack().isOf(ModItems.ELEMENTAL_GEM)) {
             ItemStack stack = entity.getStack();
             ElementalItem item = (ElementalItem) stack.getItem();
-            if (item.getType(stack) != ElementalType.BLANK) return;
+            if (ElementalUtils.getType(stack) != ElementalType.BLANK) return;
             if (source.isIn(DamageTypeTags.IS_FIRE)){ // The item is in fire
                 if (!entity.getWorld().isClient) {
                     for (BlockPos pos : BlockPos.iterateOutwards(entity.getBlockPos(), 1, 1, 1)) {
@@ -61,7 +62,7 @@ public abstract class ItemEntityMixin extends Entity {
 
                     entity.setVelocity(xVelocity, yVelocity, zVelocity);
                 }
-                item.setType(stack, ElementalType.FIRE);
+                ElementalUtils.setType(stack, ElementalType.FIRE);
             }
 
             return;
@@ -90,12 +91,12 @@ public abstract class ItemEntityMixin extends Entity {
         if (entity.getStack().isOf(ModItems.ELEMENTAL_GEM)) {
             ItemStack stack = entity.getStack();
             ElementalItem item = (ElementalItem) stack.getItem();
-            if (item.getType(stack) != ElementalType.BLANK) return;
+            if (ElementalUtils.getType(stack) != ElementalType.BLANK) return;
 
             BlockState state = entity.getWorld().getBlockState(entity.getBlockPos()); // (very) Small microoptimisation, don't have to read the block state 5 times
 
             if (state.isOf(Blocks.GRAVEL)) {
-                item.setType(stack, ElementalType.EARTH);
+                ElementalUtils.setType(stack, ElementalType.EARTH);
                 ElementalArsenal.LOGGER.info(stack.getName().getString());
                 if (!entity.getWorld().isClient) {
                     entity.getWorld().playSound(null,
@@ -105,7 +106,7 @@ public abstract class ItemEntityMixin extends Entity {
             }
 
             if (state.isOf(Blocks.POWDER_SNOW)) {
-                item.setType(stack, ElementalType.ICE);
+                ElementalUtils.setType(stack, ElementalType.ICE);
                 ElementalArsenal.LOGGER.info(stack.getName().getString());
                 if (!entity.getWorld().isClient) {
                     entity.getWorld().playSound(null,
@@ -115,7 +116,7 @@ public abstract class ItemEntityMixin extends Entity {
             }
 
             if (state.isOf(Blocks.WATER)) {
-                item.setType(stack, ElementalType.WATER);
+                ElementalUtils.setType(stack, ElementalType.WATER);
                 ElementalArsenal.LOGGER.info(stack.getName().getString());
                 if (!entity.getWorld().isClient) {
                     entity.getWorld().playSound(null,
@@ -125,7 +126,7 @@ public abstract class ItemEntityMixin extends Entity {
             }
 
             if (state.isOf(Blocks.LIGHTNING_ROD)) {
-                item.setType(stack, ElementalType.LIGHTNING);
+                ElementalUtils.setType(stack, ElementalType.LIGHTNING);
                 ElementalArsenal.LOGGER.info(stack.getName().getString());
                 LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT, entity.getWorld());
                 lightning.setPosition(entity.getBlockPos().getX(), entity.getBlockPos().getY(), entity.getBlockPos().getZ());
@@ -135,7 +136,7 @@ public abstract class ItemEntityMixin extends Entity {
             }
 
             if (fallDistance >= 50f) {
-                item.setType(stack, ElementalType.AIR);
+                ElementalUtils.setType(stack, ElementalType.AIR);
                 ElementalArsenal.LOGGER.info(stack.getName().getString());
                 if (!entity.getWorld().isClient) {
                     entity.getWorld().playSound(null,

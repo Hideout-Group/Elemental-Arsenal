@@ -1,8 +1,8 @@
 package com.hideout.elementalarsenal.registry.commands;
 
 import com.hideout.elementalarsenal.item.ModItems;
-import com.hideout.elementalarsenal.item.custom.interfaces.ElementalItem;
-import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
+import com.hideout.elementalarsenal.util.ElementalType;
+import com.hideout.elementalarsenal.util.ElementalUtils;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.ItemStack;
@@ -14,8 +14,7 @@ public class ModGiveCommand {
         final ServerCommandSource source = context.getSource();
         final ServerPlayerEntity sender = source.getPlayerOrThrow();
         ItemStack stack = new ItemStack(ModItems.ELEMENTAL_SWORD);
-        stack.getOrCreateNbt().putIntArray(MultiElementItem.AVAILABLE_TYPES,
-                new int[] {0, 1, 2, 3, 4, 5, 6, 7});
+        ElementalUtils.setAvailableTypes(stack, ElementalType.values());
         sender.giveItemStack(stack);
         return 1;
     }
@@ -23,9 +22,9 @@ public class ModGiveCommand {
     public static int allGems(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         final ServerCommandSource source = context.getSource();
         final ServerPlayerEntity sender = source.getPlayerOrThrow();
-        for (int i = 0; i < 8; i++) {
+        for (ElementalType type : ElementalType.values()) {
             ItemStack stack = new ItemStack(ModItems.ELEMENTAL_GEM);
-            stack.getOrCreateNbt().putInt(ElementalItem.TYPE, i);
+            ElementalUtils.setType(stack, type);
             sender.giveItemStack(stack);
         }
 

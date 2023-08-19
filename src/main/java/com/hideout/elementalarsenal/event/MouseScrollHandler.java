@@ -4,6 +4,7 @@ import com.hideout.elementalarsenal.event.custom.MouseScrollCallback;
 import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
 import com.hideout.elementalarsenal.mixin.InGameHudAccessor;
 import com.hideout.elementalarsenal.network.ModMessages;
+import com.hideout.elementalarsenal.util.ElementalUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -29,9 +30,9 @@ public class MouseScrollHandler {
 
                 boolean valid;
                 if (direction > 0) {
-                    valid = item.incrementType(stack, 1);
+                    valid = ElementalUtils.incrementType(stack, 1);
                 } else {
-                    valid = item.decrementType(stack, 1);
+                    valid = ElementalUtils.decrementType(stack, 1);
                 }
 
                 if (valid) {

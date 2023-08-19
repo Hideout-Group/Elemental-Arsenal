@@ -2,8 +2,8 @@ package com.hideout.elementalarsenal.recipe;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.hideout.elementalarsenal.item.custom.interfaces.ElementalItem;
 import com.hideout.elementalarsenal.item.custom.interfaces.MultiElementItem;
+import com.hideout.elementalarsenal.util.ElementalUtils;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -87,7 +87,7 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
 
         stack.getOrCreateNbt().put(baseNBTKey, addition.getOrCreateNbt().get(additionNBTKey));
         if (stack.getItem() instanceof MultiElementItem item) {
-            item.updateTypes(stack);
+            ElementalUtils.updateTypes(stack);
         }
         return stack;
     }
@@ -118,8 +118,8 @@ public class SmithingInfusionRecipe implements SmithingRecipe {
             JsonElement baseElement = JsonHelper.getElement(json, "base");
             JsonElement additionElement = JsonHelper.getElement(json, "addition");
 
-            String baseNBTKey = JsonHelper.getString(JsonHelper.asObject(baseElement, "base"), "key", ElementalItem.TYPE);
-            String additionNBTKey = JsonHelper.getString(JsonHelper.asObject(additionElement, "addition"), "key", ElementalItem.TYPE);
+            String baseNBTKey = JsonHelper.getString(JsonHelper.asObject(baseElement, "base"), "key", ElementalUtils.TYPE);
+            String additionNBTKey = JsonHelper.getString(JsonHelper.asObject(additionElement, "addition"), "key", ElementalUtils.TYPE);
 
             Ingredient template = Ingredient.fromJson(templateElement);
             Ingredient base = Ingredient.fromJson(baseElement);

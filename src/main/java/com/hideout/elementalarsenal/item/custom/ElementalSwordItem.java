@@ -7,10 +7,9 @@ import com.hideout.elementalarsenal.item.custom.util.ElementalSwordRightClickEff
 import com.hideout.elementalarsenal.item.custom.util.ModTooltipHelper;
 import com.hideout.elementalarsenal.util.ElementalOnHitEffects;
 import com.hideout.elementalarsenal.util.ElementalType;
+import com.hideout.elementalarsenal.util.ElementalUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.render.model.ModelBakeSettings;
-import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -20,7 +19,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -28,9 +26,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ElementalSwordItem extends SwordItem implements MultiElementItem {
@@ -41,14 +36,14 @@ public class ElementalSwordItem extends SwordItem implements MultiElementItem {
     @Override
     public ItemStack getDefaultStack() {
         ItemStack stack = new ItemStack(this);
-        addType(stack, ElementalType.BLANK);
+        ElementalUtils.addType(stack, ElementalType.BLANK);
         return stack;
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (target.getWorld().isClient) return super.postHit(stack, target, attacker);
-        ElementalType type = getType(stack);
+        ElementalType type = ElementalUtils.getType(stack);
 
         ElementalOnHitEffects.performOnHitEffect(type, target, attacker);
 
@@ -62,7 +57,7 @@ public class ElementalSwordItem extends SwordItem implements MultiElementItem {
         }
 
         ItemStack stack = user.getMainHandStack();
-        ElementalType type = getType(stack);
+        ElementalType type = ElementalUtils.getType(stack);
 
         int cooldown = ElementalSwordRightClickEffects.performRightClickEffect(type, world, user);
 
@@ -75,33 +70,30 @@ public class ElementalSwordItem extends SwordItem implements MultiElementItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        ElementalType[] types = getAvailableTypes(stack);
+        ElementalType[] types = ElementalUtils.getAvailableTypes(stack);
         if (types.length > 0) {
             if (!Screen.hasShiftDown()) {
                 tooltip.add(Text.literal("Press SHIFT to view elements").formatted(Formatting.YELLOW));
                 tooltip.add(Text.literal("Press CTRL + SHIFT to view abilities").formatted(Formatting.AQUA));
             } else if (Screen.hasControlDown()) {
-                ElementalType type = getType(stack);
-                ModTooltipHelper.Sword.getTooltipForType(type).forEach(text ->
+                ElementalType type = ElementalUtils.getType(stack);
+                ModTooltipHelper.Sword.INSTANCE.getTooltipForType(type).forEach(text ->
                         tooltip.add(text.setStyle(type.getStyle())));
             } else {
                 for (ElementalType type : types) {
                     tooltip.add(type.toFormattedText());
                 }
             }
+        } else {
+            ElementalUtils.addType(stack, ElementalType.BLANK);
         }
         super.appendTooltip(stack, world, tooltip, context);
     }
 
     @Override
     public Text getName(ItemStack stack) {
-        return Text.literal(getAppendedName(stack))
-                .setStyle(getType(stack).getStyle());
-    }
-
-    @Override
-    public void setType(ItemStack stack, ElementalType type) {
-        stack.getOrCreateNbt().putInt(TYPE, type.getId());
+        return Text.literal(ElementalUtils.getAppendedName(stack))
+                .setStyle(ElementalUtils.getType(stack).getStyle());
     }
 
     @Override
@@ -112,7 +104,7 @@ public class ElementalSwordItem extends SwordItem implements MultiElementItem {
 
         float damage = getAttackDamage();
 
-        switch (getType(stack)) {
+        switch (ElementalUtils.getType(stack)) {
             case BLANK -> damage--; // No element so shouldn't be strong
             case FIRE, LIGHTNING, ICE -> damage++; // 'Offensive' types
             case EARTH -> damage += 3; // Heavy hitter but slow
@@ -120,48 +112,16 @@ public class ElementalSwordItem extends SwordItem implements MultiElementItem {
 
         float attackSpeed = -2.4f;
 
-        switch (getType(stack)) {
+        switch (ElementalUtils.getType(stack)) {
             case EARTH -> attackSpeed -= 0.6f;
             case LIGHTNING -> attackSpeed += 0.4f;
         }
 
         builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID,
-                "Weapon modifier", damage, EntityAttributeModifier.Operation.ADDITION));
+                "Elemental Type Modifier", damage, EntityAttributeModifier.Operation.ADDITION));
         builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID,
-                "Weapon modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
+                "Elemental Type Modifier", attackSpeed, EntityAttributeModifier.Operation.ADDITION));
 
         return builder.build();
-    }
-
-    @Override
-    public ElementalType getType(ItemStack stack) {
-        return ElementalType.fromId(stack.getOrCreateNbt().getInt(TYPE));
-    }
-
-    @Override
-    public String getAppendedName(ItemStack stack) {
-        return getType(stack).toString() + " " + super.getName(stack).getString();
-    }
-
-    @Override
-    public ElementalType[] getAvailableTypes(ItemStack stack) {
-        return Arrays.stream(stack.getOrCreateNbt().getIntArray(AVAILABLE_TYPES)).mapToObj(ElementalType::fromId).toArray(ElementalType[]::new);
-    }
-
-    @Override
-    public void addType(ItemStack stack, ElementalType type) {
-        NbtCompound nbt = stack.getOrCreateNbt();
-        if (getAvailableTypes(stack).length == 0) {
-            nbt.putIntArray(AVAILABLE_TYPES, new ArrayList<>(List.of(0)));
-        }
-
-        ArrayList<Integer> available = new ArrayList<>(Arrays.stream(getAvailableTypes(stack))
-                .map(ElementalType::getId).toList()); // Java array moment
-
-        if (available.contains(type.getId())) return;
-
-        available.add(type.getId());
-        Collections.sort(available); // Sort for consistency
-        nbt.putIntArray(AVAILABLE_TYPES, available);
     }
 }

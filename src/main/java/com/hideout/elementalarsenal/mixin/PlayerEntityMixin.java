@@ -2,6 +2,7 @@ package com.hideout.elementalarsenal.mixin;
 
 import com.hideout.elementalarsenal.item.custom.interfaces.ElementalItem;
 import com.hideout.elementalarsenal.util.ElementalType;
+import com.hideout.elementalarsenal.util.ElementalUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CropBlock;
@@ -12,10 +13,8 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BoneMealItem;
@@ -37,7 +36,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
@@ -48,7 +46,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     public void checkForAirItem(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
         if (getStackInHand(Hand.MAIN_HAND).getItem() instanceof ElementalItem item) {
             if (damageSource.isOf(DamageTypes.FALL) || damageSource.isOf(DamageTypes.FLY_INTO_WALL)) {
-                if (item.getType(getStackInHand(Hand.MAIN_HAND)) == ElementalType.AIR) {
+                if (ElementalUtils.getType(getStackInHand(Hand.MAIN_HAND)) == ElementalType.AIR) {
                     cir.setReturnValue(true);
                 }
             }
@@ -61,7 +59,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         ItemStack stack = player.getMainHandStack();
 
         if (stack.getItem() instanceof ElementalItem item) {
-            switch (item.getType(stack)) {
+            switch (ElementalUtils.getType(stack)) {
                 case LIGHTNING -> {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 3, 2, false, false));
                 }
@@ -70,6 +68,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 }
                 case WATER -> {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 3, 0, false, false));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 3, 0, false, false));
                 }
                 case EARTH -> {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 3, 0, false, false));

@@ -1,6 +1,7 @@
 package com.hideout.elementalarsenal;
 
 import com.hideout.elementalarsenal.effect.ModStatusEffects;
+import com.hideout.elementalarsenal.entity.ModEntities;
 import com.hideout.elementalarsenal.event.ModEvents;
 import com.hideout.elementalarsenal.item.ModItemGroups;
 import com.hideout.elementalarsenal.item.ModItems;
@@ -27,11 +28,13 @@ public class ElementalArsenal implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 		ModEvents.registerEvents();
+		ModEntities.register();
 
-		ModItems.registerItems();
+		ModItems.register();
 		ModItemGroups.registerItemGroups(); // RUN AFTER ITEMS
 
 		ModParticles.registerParticles();
+
 
 		ModRegistries.registerRegistries();
 		ModRecipes.registerRecipes();

@@ -14,6 +14,8 @@ public class ElementalArsenalClient implements ClientModInitializer {
         ModColorProvider.registerColors();
         ModEvents.registerClientEvents();
         ModClientParticles.registerClientParticles();
+        ModClientEntities.register();
+        ModItemRenderers.register();
 
         ModMessages.registerS2CPackets();
     }

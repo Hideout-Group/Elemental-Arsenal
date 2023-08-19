@@ -6,7 +6,8 @@
     "ItemEntityMixin",
     "MobEntityAccessor",
     "MobEntityMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "TridentEntityAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
